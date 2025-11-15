@@ -1,14 +1,5 @@
 
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Firebase Configuration (سيتم استخدام CDN بدلاً من modules)
 const firebaseConfig = {
   apiKey: "AIzaSyBQlS9bEVuEMIztaHEltgsOOjz-mTzDxNc",
   authDomain: "trgi-4f4f1.firebaseapp.com",
@@ -19,13 +10,45 @@ const firebaseConfig = {
   measurementId: "G-E0EGTNLRW3"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const db = getFirestore(app);
-const auth = getAuth(app);
+// بيانات الموظفين التجريبية
+let currentEmployee = {
+  id: 1,
+  name: 'أحمد محمد الشعلان',
+  position: 'محلل نظم',
+  yearsOfExperience: 4,
+  performanceRating: 'ممتاز',
+  completedCourses: 3,
+  monthsSinceLastPromotion: 18,
+  lastCourseDate: '2023-06-15',
+  department: 'تقنية المعلومات'
+};
 
-// مثال على وظيفة لحساب نسبة جاهزية الموظف للترقية
+// قاعدة بيانات الموظفين التجريبية
+const employees = [
+  currentEmployee,
+  {
+    id: 2,
+    name: 'فاطمة أحمد علي',
+    position: 'محاسبة',
+    yearsOfExperience: 6,
+    performanceRating: 'جيد جداً',
+    completedCourses: 5,
+    monthsSinceLastPromotion: 30,
+    department: 'المالية'
+  },
+  {
+    id: 3,
+    name: 'محمد سالم القحطاني',
+    position: 'مشرف إداري',
+    yearsOfExperience: 2,
+    performanceRating: 'جيد',
+    completedCourses: 2,
+    monthsSinceLastPromotion: 8,
+    department: 'الإدارة العامة'
+  }
+];
+
+// حساب نسبة جاهزية الموظف للترقية
 function calculatePromotionReadiness(employeeData) {
   let score = 0;
   const maxScore = 100;
@@ -68,21 +91,111 @@ function calculatePromotionReadiness(employeeData) {
   return Math.min(score, maxScore);
 }
 
-// مثال على بيانات موظف
-const sampleEmployee = {
-  name: 'أحمد محمد',
-  yearsOfExperience: 4,
-  performanceRating: 'ممتاز',
-  completedCourses: 3,
-  monthsSinceLastPromotion: 18
-};
+// تحديد رسالة التوصية
+function getPromotionRecommendation(score, employeeData) {
+  if (score >= 90) {
+    return '🎉 مبروك! أنت جاهز للترقية';
+  } else if (score >= 75) {
+    return '⚡ قريب جداً من الترقية - اكمل دورة تدريبية';
+  } else if (score >= 60) {
+    return '📚 حسّن من تقييمك السنوي واحصل على دورات';
+  } else {
+    return '💪 استمر في العمل وطور مهاراتك';
+  }
+}
 
-// حساب نسبة الجاهزية
-const readinessScore = calculatePromotionReadiness(sampleEmployee);
-console.log(`نسبة جاهزية ${sampleEmployee.name} للترقية: ${readinessScore}%`);
+// حساب النسبة الجديدة
+function calculateNewScore() {
+  const score = calculatePromotionReadiness(currentEmployee);
+  const recommendation = getPromotionRecommendation(score, currentEmployee);
+  
+  updateScoreDisplay(score, recommendation);
+  
+  // إضافة تأثير بصري
+  const scoreElement = document.querySelector('.readiness-score');
+  scoreElement.classList.add('score-updated');
+  setTimeout(() => scoreElement.classList.remove('score-updated'), 1000);
+}
 
-// تصدير المتغيرات للاستخدام في أماكن أخرى
-window.firebaseApp = app;
-window.firebaseDb = db;
-window.firebaseAuth = auth;
-window.calculatePromotionReadiness = calculatePromotionReadiness;
+// تحديث عرض النسبة
+function updateScoreDisplay(score, recommendation) {
+  const scoreElement = document.querySelector('.readiness-score');
+  const recommendationElement = document.querySelector('.recommendation-text');
+  
+  scoreElement.textContent = `${score}%`;
+  scoreElement.className = 'readiness-score';
+  
+  if (score >= 90) {
+    scoreElement.classList.add('ready-100');
+  } else if (score >= 75) {
+    scoreElement.classList.add('ready-85');
+  } else {
+    scoreElement.classList.add('ready-low');
+  }
+  
+  recommendationElement.textContent = `🔸 ${recommendation}`;
+}
+
+// عرض إحصائيات الموظف
+function displayEmployeeStats() {
+  const statsElement = document.querySelector('.employee-stats');
+  statsElement.innerHTML = `
+    <li>الاسم: ${currentEmployee.name}</li>
+    <li>المنصب: ${currentEmployee.position}</li>
+    <li>القسم: ${currentEmployee.department}</li>
+    <li>سنوات الخبرة: ${currentEmployee.yearsOfExperience} سنوات</li>
+    <li>التقييم السنوي: ${currentEmployee.performanceRating}</li>
+    <li>الدورات المكتملة: ${currentEmployee.completedCourses} دورات</li>
+    <li>آخر ترقية: منذ ${currentEmployee.monthsSinceLastPromotion} شهر</li>
+  `;
+}
+
+// عرض لوحة تحكم المدير
+function showManagerDashboard() {
+  const readyEmployees = employees.filter(emp => calculatePromotionReadiness(emp) >= 75);
+  const topPerformers = employees.filter(emp => emp.performanceRating === 'ممتاز');
+  
+  document.querySelector('.manager-dashboard').style.display = 'block';
+  
+  // عرض الموظفين الجاهزين للترقية
+  const readyList = document.querySelector('.ready-employees');
+  readyList.innerHTML = readyEmployees.map(emp => 
+    `<li>🌟 ${emp.name} - ${emp.position} (${calculatePromotionReadiness(emp)}%)</li>`
+  ).join('');
+  
+  // عرض أعلى الموظفين أداءً
+  const topList = document.querySelector('.top-performers');
+  topList.innerHTML = topPerformers.map(emp => 
+    `<li>⭐ ${emp.name} - ${emp.department}</li>`
+  ).join('');
+}
+
+// إخفاء لوحة تحكم المدير
+function hideManagerDashboard() {
+  document.querySelector('.manager-dashboard').style.display = 'none';
+}
+
+// تبديل عرض لوحة المدير
+function toggleManagerView() {
+  const dashboard = document.querySelector('.manager-dashboard');
+  if (dashboard.style.display === 'none' || !dashboard.style.display) {
+    showManagerDashboard();
+  } else {
+    hideManagerDashboard();
+  }
+}
+
+// تشغيل التطبيق عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', function() {
+  const initialScore = calculatePromotionReadiness(currentEmployee);
+  const initialRecommendation = getPromotionRecommendation(initialScore, currentEmployee);
+  
+  updateScoreDisplay(initialScore, initialRecommendation);
+  displayEmployeeStats();
+});
+
+// تصدير الوظائف للاستخدام العام
+window.calculateNewScore = calculateNewScore;
+window.toggleManagerView = toggleManagerView;
+window.showManagerDashboard = showManagerDashboard;
+window.hideManagerDashboard = hideManagerDashboard;

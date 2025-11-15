@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
 <html>
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>replit</title>
+  <title>ترقَّى - منصة الترقيات والتطوير المهني</title>
   <link href="style.css" rel="stylesheet" type="text/css" />
 </head>
 
@@ -13,18 +14,21 @@
     <div class="header">
       <h1>🌟 تطبيق ترقَّى</h1>
       <p>منصة ذكية للترقيات والتطوير المهني</p>
+      <div class="header-buttons">
+        <button onclick="calculateNewScore()" class="primary-button">إعادة حساب النسبة</button>
+        <button onclick="toggleManagerView()" class="secondary-button">لوحة تحكم المدير</button>
+      </div>
     </div>
     
-    <div class="promotion-card">
+    <div class="promotion-card main-score-card">
       <h3>📊 نسبة الجاهزية للترقية</h3>
       <div class="readiness-score ready-85">85%</div>
-      <p>🔸 ينقصك دورة "تطوير الذات" للوصول إلى 100%</p>
-      <button onclick="calculateNewScore()">إعادة حساب النسبة</button>
+      <p class="recommendation-text">🔸 ينقصك دورة "تطوير الذات" للوصول إلى 100%</p>
     </div>
     
     <div class="promotion-card">
-      <h3>📈 إحصائيات سريعة</h3>
-      <ul>
+      <h3>📈 الملف الشخصي</h3>
+      <ul class="employee-stats">
         <li>سنوات الخبرة: 4 سنوات</li>
         <li>التقييم السنوي: ممتاز</li>
         <li>الدورات المكتملة: 3 دورات</li>
@@ -33,16 +37,84 @@
     </div>
     
     <div class="promotion-card">
-      <h3>🎯 التوصيات</h3>
-      <ul>
+      <h3>🎯 التوصيات الشخصية</h3>
+      <ul class="recommendations-list">
         <li>✅ أكمل دورة "تطوير الذات" قريباً</li>
         <li>✅ حافظ على مستوى الأداء الممتاز</li>
         <li>⏰ ترقية متوقعة خلال 3-6 أشهر</li>
+        <li>📚 اشترك في دورة "إدارة المشاريع"</li>
       </ul>
+    </div>
+
+    <!-- لوحة تحكم المدير -->
+    <div class="manager-dashboard" style="display: none;">
+      <h2>🏢 لوحة تحكم المدير</h2>
+      
+      <div class="dashboard-grid">
+        <div class="dashboard-card">
+          <h4>🔝 أعلى الموظفين أداءً</h4>
+          <ul class="top-performers">
+            <li>⭐ أحمد محمد - تقنية المعلومات</li>
+          </ul>
+        </div>
+        
+        <div class="dashboard-card">
+          <h4>💼 الموظفين الجاهزين للترقية</h4>
+          <ul class="ready-employees">
+            <li>🌟 أحمد محمد - محلل نظم (85%)</li>
+          </ul>
+        </div>
+        
+        <div class="dashboard-card">
+          <h4>📈 احتياج الإدارة لدورات تطويرية</h4>
+          <ul>
+            <li>📚 دورة تطوير الذات - 60% من الموظفين</li>
+            <li>💻 دورة إدارة المشاريع - 40% من الموظفين</li>
+            <li>🔧 دورة التطوير التقني - 25% من الموظفين</li>
+          </ul>
+        </div>
+        
+        <div class="dashboard-card stats-card">
+          <h4>📊 إحصائيات سريعة</h4>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-number">3</div>
+              <div class="stat-label">إجمالي الموظفين</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">1</div>
+              <div class="stat-label">جاهز للترقية</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">75%</div>
+              <div class="stat-label">متوسط الأداء</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="dashboard-actions">
+        <button onclick="generateReport()" class="action-button">📄 تصدير التقرير</button>
+        <button onclick="scheduleTraining()" class="action-button">📅 جدولة التدريب</button>
+        <button onclick="hideManagerDashboard()" class="close-button">إغلاق اللوحة</button>
+      </div>
+    </div>
+    
+    <!-- تنبيهات ذكية -->
+    <div class="notifications-panel">
+      <h3>🔔 التنبيهات الذكية</h3>
+      <div class="notification-item">
+        <span class="notification-icon">⚡</span>
+        <span class="notification-text">تذكير: موعد التقييم السنوي خلال 30 يوم</span>
+      </div>
+      <div class="notification-item">
+        <span class="notification-icon">📚</span>
+        <span class="notification-text">دورة "تطوير الذات" متاحة للتسجيل</span>
+      </div>
     </div>
   </div>
   
-  <script type="module" src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 
 </html>
