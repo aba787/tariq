@@ -1,15 +1,4 @@
 
-// Firebase Configuration (سيتم استخدام CDN بدلاً من modules)
-const firebaseConfig = {
-  apiKey: "AIzaSyBQlS9bEVuEMIztaHEltgsOOjz-mTzDxNc",
-  authDomain: "trgi-4f4f1.firebaseapp.com",
-  projectId: "trgi-4f4f1",
-  storageBucket: "trgi-4f4f1.firebasestorage.app",
-  messagingSenderId: "644222531254",
-  appId: "1:644222531254:web:eb547ecc96015a586c5817",
-  measurementId: "G-E0EGTNLRW3"
-};
-
 // بيانات الموظفين التجريبية
 let currentEmployee = {
   id: 1,
@@ -113,8 +102,10 @@ function calculateNewScore() {
   
   // إضافة تأثير بصري
   const scoreElement = document.querySelector('.readiness-score');
-  scoreElement.classList.add('score-updated');
-  setTimeout(() => scoreElement.classList.remove('score-updated'), 1000);
+  if (scoreElement) {
+    scoreElement.classList.add('score-updated');
+    setTimeout(() => scoreElement.classList.remove('score-updated'), 1000);
+  }
 }
 
 // تحديث عرض النسبة
@@ -122,32 +113,38 @@ function updateScoreDisplay(score, recommendation) {
   const scoreElement = document.querySelector('.readiness-score');
   const recommendationElement = document.querySelector('.recommendation-text');
   
-  scoreElement.textContent = `${score}%`;
-  scoreElement.className = 'readiness-score';
-  
-  if (score >= 90) {
-    scoreElement.classList.add('ready-100');
-  } else if (score >= 75) {
-    scoreElement.classList.add('ready-85');
-  } else {
-    scoreElement.classList.add('ready-low');
+  if (scoreElement) {
+    scoreElement.textContent = `${score}%`;
+    scoreElement.className = 'readiness-score';
+    
+    if (score >= 90) {
+      scoreElement.classList.add('ready-100');
+    } else if (score >= 75) {
+      scoreElement.classList.add('ready-85');
+    } else {
+      scoreElement.classList.add('ready-low');
+    }
   }
   
-  recommendationElement.textContent = `🔸 ${recommendation}`;
+  if (recommendationElement) {
+    recommendationElement.textContent = `🔸 ${recommendation}`;
+  }
 }
 
 // عرض إحصائيات الموظف
 function displayEmployeeStats() {
   const statsElement = document.querySelector('.employee-stats');
-  statsElement.innerHTML = `
-    <li>الاسم: ${currentEmployee.name}</li>
-    <li>المنصب: ${currentEmployee.position}</li>
-    <li>القسم: ${currentEmployee.department}</li>
-    <li>سنوات الخبرة: ${currentEmployee.yearsOfExperience} سنوات</li>
-    <li>التقييم السنوي: ${currentEmployee.performanceRating}</li>
-    <li>الدورات المكتملة: ${currentEmployee.completedCourses} دورات</li>
-    <li>آخر ترقية: منذ ${currentEmployee.monthsSinceLastPromotion} شهر</li>
-  `;
+  if (statsElement) {
+    statsElement.innerHTML = `
+      <li>الاسم: ${currentEmployee.name}</li>
+      <li>المنصب: ${currentEmployee.position}</li>
+      <li>القسم: ${currentEmployee.department}</li>
+      <li>سنوات الخبرة: ${currentEmployee.yearsOfExperience} سنوات</li>
+      <li>التقييم السنوي: ${currentEmployee.performanceRating}</li>
+      <li>الدورات المكتملة: ${currentEmployee.completedCourses} دورات</li>
+      <li>آخر ترقية: منذ ${currentEmployee.monthsSinceLastPromotion} شهر</li>
+    `;
+  }
 }
 
 // عرض لوحة تحكم المدير
@@ -155,34 +152,56 @@ function showManagerDashboard() {
   const readyEmployees = employees.filter(emp => calculatePromotionReadiness(emp) >= 75);
   const topPerformers = employees.filter(emp => emp.performanceRating === 'ممتاز');
   
-  document.querySelector('.manager-dashboard').style.display = 'block';
+  const dashboard = document.querySelector('.manager-dashboard');
+  if (dashboard) {
+    dashboard.style.display = 'block';
+  }
   
   // عرض الموظفين الجاهزين للترقية
   const readyList = document.querySelector('.ready-employees');
-  readyList.innerHTML = readyEmployees.map(emp => 
-    `<li>🌟 ${emp.name} - ${emp.position} (${calculatePromotionReadiness(emp)}%)</li>`
-  ).join('');
+  if (readyList) {
+    readyList.innerHTML = readyEmployees.map(emp => 
+      `<li>🌟 ${emp.name} - ${emp.position} (${calculatePromotionReadiness(emp)}%)</li>`
+    ).join('');
+  }
   
   // عرض أعلى الموظفين أداءً
   const topList = document.querySelector('.top-performers');
-  topList.innerHTML = topPerformers.map(emp => 
-    `<li>⭐ ${emp.name} - ${emp.department}</li>`
-  ).join('');
+  if (topList) {
+    topList.innerHTML = topPerformers.map(emp => 
+      `<li>⭐ ${emp.name} - ${emp.department}</li>`
+    ).join('');
+  }
 }
 
 // إخفاء لوحة تحكم المدير
 function hideManagerDashboard() {
-  document.querySelector('.manager-dashboard').style.display = 'none';
+  const dashboard = document.querySelector('.manager-dashboard');
+  if (dashboard) {
+    dashboard.style.display = 'none';
+  }
 }
 
 // تبديل عرض لوحة المدير
 function toggleManagerView() {
   const dashboard = document.querySelector('.manager-dashboard');
-  if (dashboard.style.display === 'none' || !dashboard.style.display) {
-    showManagerDashboard();
-  } else {
-    hideManagerDashboard();
+  if (dashboard) {
+    if (dashboard.style.display === 'none' || !dashboard.style.display) {
+      showManagerDashboard();
+    } else {
+      hideManagerDashboard();
+    }
   }
+}
+
+// تصدير التقرير
+function generateReport() {
+  alert('📄 جاري تصدير التقرير...\nسيتم إرسال التقرير عبر البريد الإلكتروني قريباً');
+}
+
+// جدولة التدريب
+function scheduleTraining() {
+  alert('📅 جاري جدولة التدريب...\nسيتم تحديد مواعيد الدورات التدريبية المناسبة');
 }
 
 // تشغيل التطبيق عند تحميل الصفحة
@@ -199,3 +218,5 @@ window.calculateNewScore = calculateNewScore;
 window.toggleManagerView = toggleManagerView;
 window.showManagerDashboard = showManagerDashboard;
 window.hideManagerDashboard = hideManagerDashboard;
+window.generateReport = generateReport;
+window.scheduleTraining = scheduleTraining;
