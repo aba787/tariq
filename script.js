@@ -78,9 +78,15 @@ class DataManager {
   }
 
   saveData() {
-    if (this.employees && this.currentEmployeeId) {
-      localStorage.setItem('employeesData', JSON.stringify(this.employees));
-      localStorage.setItem('currentEmployeeId', this.currentEmployeeId.toString());
+    try {
+      if (this.employees && Array.isArray(this.employees)) {
+        localStorage.setItem('employeesData', JSON.stringify(this.employees));
+      }
+      if (this.currentEmployeeId !== undefined && this.currentEmployeeId !== null) {
+        localStorage.setItem('currentEmployeeId', this.currentEmployeeId.toString());
+      }
+    } catch (error) {
+      console.error('خطأ في حفظ البيانات:', error);
     }
   }
 
@@ -173,11 +179,23 @@ class DataManager {
 }
 
 // إنشاء مدير البيانات العام
-const dataManager = new DataManager();
+let dataManager, currentEmployee, employees;
 
-// الحصول على الموظف الحالي والموظفين
-let currentEmployee = dataManager.getCurrentEmployee();
-let employees = dataManager.getAllEmployees();
+// تهيئة البيانات بشكل آمن
+function initializeApp() {
+  try {
+    dataManager = new DataManager();
+    currentEmployee = dataManager.getCurrentEmployee();
+    employees = dataManager.getAllEmployees();
+    return true;
+  } catch (error) {
+    console.error('خطأ في تهيئة التطبيق:', error);
+    return false;
+  }
+}
+
+// تهيئة التطبيق
+initializeApp();
 
 // حساب نسبة جاهزية الموظف للترقية
 function calculatePromotionReadiness(employeeData) {
@@ -527,8 +545,8 @@ function addNewEmployee(event) {
 
     const newEmployee = dataManager.addEmployee(employeeData);
     
-    // تحديث قائمة الموظفين العامة
-    employees.push(newEmployee);
+    // تحديث قائمة الموظفين العامة من المصدر الأساسي
+    employees = dataManager.getAllEmployees();
     
     showNotification(`تم إضافة الموظف ${newEmployee.name} بنجاح!`, 'success');
     hideAddEmployeeForm();
