@@ -1,41 +1,181 @@
 
-// بيانات الموظفين التجريبية
-let currentEmployee = {
-  id: 1,
-  name: 'أحمد محمد الشعلان',
-  position: 'محلل نظم',
-  yearsOfExperience: 4,
-  performanceRating: 'ممتاز',
-  completedCourses: 3,
-  monthsSinceLastPromotion: 18,
-  lastCourseDate: '2023-06-15',
-  department: 'تقنية المعلومات'
-};
-
-// قاعدة بيانات الموظفين التجريبية
-const employees = [
-  currentEmployee,
-  {
-    id: 2,
-    name: 'فاطمة أحمد علي',
-    position: 'محاسبة',
-    yearsOfExperience: 6,
-    performanceRating: 'جيد جداً',
-    completedCourses: 5,
-    monthsSinceLastPromotion: 30,
-    department: 'المالية'
-  },
-  {
-    id: 3,
-    name: 'محمد سالم القحطاني',
-    position: 'مشرف إداري',
-    yearsOfExperience: 2,
-    performanceRating: 'جيد',
-    completedCourses: 2,
-    monthsSinceLastPromotion: 8,
-    department: 'الإدارة العامة'
+// نظام إدارة البيانات المحسن
+class DataManager {
+  constructor() {
+    this.initializeData();
   }
-];
+
+  initializeData() {
+    // تحميل البيانات من localStorage أو استخدام البيانات التجريبية
+    const savedData = localStorage.getItem('employeesData');
+    if (savedData) {
+      try {
+        this.employees = JSON.parse(savedData);
+      } catch (e) {
+        console.warn('فشل في تحميل البيانات المحفوظة، استخدام البيانات التجريبية');
+        this.loadDefaultData();
+      }
+    } else {
+      this.loadDefaultData();
+    }
+    
+    this.currentEmployeeId = parseInt(localStorage.getItem('currentEmployeeId')) || 1;
+  }
+
+  loadDefaultData() {
+    this.employees = [
+      {
+        id: 1,
+        name: 'أحمد محمد الشعلان',
+        position: 'محلل نظم',
+        yearsOfExperience: 4,
+        performanceRating: 'ممتاز',
+        completedCourses: 3,
+        monthsSinceLastPromotion: 18,
+        lastCourseDate: '2023-06-15',
+        department: 'تقنية المعلومات',
+        joinDate: '2020-01-15',
+        email: 'ahmed.alshaalan@company.gov.sa'
+      },
+      {
+        id: 2,
+        name: 'فاطمة أحمد علي',
+        position: 'محاسبة',
+        yearsOfExperience: 6,
+        performanceRating: 'جيد جداً',
+        completedCourses: 5,
+        monthsSinceLastPromotion: 30,
+        department: 'المالية',
+        joinDate: '2018-03-10',
+        email: 'fatima.ali@company.gov.sa'
+      },
+      {
+        id: 3,
+        name: 'محمد سالم القحطاني',
+        position: 'مشرف إداري',
+        yearsOfExperience: 2,
+        performanceRating: 'جيد',
+        completedCourses: 2,
+        monthsSinceLastPromotion: 8,
+        department: 'الإدارة العامة',
+        joinDate: '2022-06-01',
+        email: 'mohammed.alqahtani@company.gov.sa'
+      },
+      {
+        id: 4,
+        name: 'نورا عبدالله المطيري',
+        position: 'مطورة برمجيات',
+        yearsOfExperience: 3,
+        performanceRating: 'ممتاز',
+        completedCourses: 4,
+        monthsSinceLastPromotion: 15,
+        department: 'تقنية المعلومات',
+        joinDate: '2021-09-01',
+        email: 'nora.almutairi@company.gov.sa'
+      }
+    ];
+    this.saveData();
+  }
+
+  saveData() {
+    localStorage.setItem('employeesData', JSON.stringify(this.employees));
+    localStorage.setItem('currentEmployeeId', this.currentEmployeeId.toString());
+  }
+
+  getCurrentEmployee() {
+    return this.employees.find(emp => emp.id === this.currentEmployeeId) || this.employees[0];
+  }
+
+  getAllEmployees() {
+    return [...this.employees];
+  }
+
+  addEmployee(employeeData) {
+    // التحقق من صحة البيانات
+    if (!this.validateEmployeeData(employeeData)) {
+      throw new Error('بيانات الموظف غير صحيحة');
+    }
+
+    const newEmployee = {
+      ...employeeData,
+      id: Math.max(...this.employees.map(emp => emp.id)) + 1,
+      joinDate: employeeData.joinDate || new Date().toISOString().split('T')[0]
+    };
+
+    this.employees.push(newEmployee);
+    this.saveData();
+    return newEmployee;
+  }
+
+  validateEmployeeData(data) {
+    const required = ['name', 'position', 'yearsOfExperience', 'performanceRating', 'department'];
+    
+    for (let field of required) {
+      if (!data[field] || data[field].toString().trim() === '') {
+        console.error(`حقل مطلوب مفقود: ${field}`);
+        return false;
+      }
+    }
+
+    // التحقق من صحة البريد الإلكتروني
+    if (data.email && !this.isValidEmail(data.email)) {
+      console.error('عنوان البريد الإلكتروني غير صحيح');
+      return false;
+    }
+
+    // التحقق من سنوات الخبرة
+    if (isNaN(data.yearsOfExperience) || data.yearsOfExperience < 0) {
+      console.error('سنوات الخبرة يجب أن تكون رقم موجب');
+      return false;
+    }
+
+    return true;
+  }
+
+  isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  filterEmployees(criteria) {
+    let filtered = [...this.employees];
+
+    if (criteria.department && criteria.department !== 'الكل') {
+      filtered = filtered.filter(emp => emp.department === criteria.department);
+    }
+
+    if (criteria.performanceRating && criteria.performanceRating !== 'الكل') {
+      filtered = filtered.filter(emp => emp.performanceRating === criteria.performanceRating);
+    }
+
+    if (criteria.minExperience) {
+      filtered = filtered.filter(emp => emp.yearsOfExperience >= criteria.minExperience);
+    }
+
+    if (criteria.readyForPromotion) {
+      filtered = filtered.filter(emp => calculatePromotionReadiness(emp) >= 75);
+    }
+
+    return filtered;
+  }
+
+  switchEmployee(employeeId) {
+    const employee = this.employees.find(emp => emp.id === employeeId);
+    if (employee) {
+      this.currentEmployeeId = employeeId;
+      this.saveData();
+      return employee;
+    }
+    return null;
+  }
+}
+
+// إنشاء مدير البيانات العام
+const dataManager = new DataManager();
+
+// الحصول على الموظف الحالي
+let currentEmployee = dataManager.getCurrentEmployee();
+const employees = dataManager.getAllEmployees();
 
 // حساب نسبة جاهزية الموظف للترقية
 function calculatePromotionReadiness(employeeData) {
@@ -300,13 +440,226 @@ ${employees.map(emp => {
   showNotification('📅 تم إنشاء جدول التدريب بنجاح!', 'success');
 }
 
+// وظائف إدارة الموظفين
+function showEmployeeList() {
+  const employeesListDiv = document.querySelector('.employees-list');
+  const container = document.querySelector('.employee-cards-container');
+  
+  if (employeesListDiv && container) {
+    // إظهار قائمة الموظفين
+    employeesListDiv.style.display = 'block';
+    
+    // تطبيق الفلاتر الحالية
+    const filters = getCurrentFilters();
+    const filteredEmployees = dataManager.filterEmployees(filters);
+    
+    // إنشاء بطاقات الموظفين
+    container.innerHTML = filteredEmployees.map(emp => {
+      const score = calculatePromotionReadiness(emp);
+      const scoreClass = score >= 90 ? 'ready-100' : score >= 75 ? 'ready-85' : 'ready-low';
+      
+      return `
+        <div class="employee-card">
+          <div class="employee-header">
+            <h4>${emp.name}</h4>
+            <div class="employee-score ${scoreClass}">${score}%</div>
+          </div>
+          <div class="employee-details">
+            <p><strong>المنصب:</strong> ${emp.position}</p>
+            <p><strong>القسم:</strong> ${emp.department}</p>
+            <p><strong>الخبرة:</strong> ${emp.yearsOfExperience} سنوات</p>
+            <p><strong>التقييم:</strong> ${emp.performanceRating}</p>
+            <p><strong>الدورات:</strong> ${emp.completedCourses || 0} دورات</p>
+          </div>
+          <div class="employee-actions">
+            <button onclick="switchToEmployee(${emp.id})" class="switch-button">عرض التفاصيل</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+    
+    // إظهار رسالة إذا لم توجد نتائج
+    if (filteredEmployees.length === 0) {
+      container.innerHTML = '<p class="no-results">لا توجد موظفين يطابقون معايير البحث</p>';
+    }
+  }
+}
+
+function hideEmployeeList() {
+  const employeesListDiv = document.querySelector('.employees-list');
+  if (employeesListDiv) {
+    employeesListDiv.style.display = 'none';
+  }
+}
+
+function showAddEmployeeForm() {
+  const formDiv = document.querySelector('.add-employee-form');
+  if (formDiv) {
+    formDiv.style.display = 'block';
+    // مسح النموذج
+    document.getElementById('newEmployeeForm').reset();
+  }
+}
+
+function hideAddEmployeeForm() {
+  const formDiv = document.querySelector('.add-employee-form');
+  if (formDiv) {
+    formDiv.style.display = 'none';
+  }
+}
+
+function addNewEmployee(event) {
+  event.preventDefault();
+  
+  try {
+    const employeeData = {
+      name: document.getElementById('employeeName').value.trim(),
+      position: document.getElementById('employeePosition').value.trim(),
+      department: document.getElementById('employeeDepartment').value,
+      yearsOfExperience: parseInt(document.getElementById('employeeExperience').value),
+      performanceRating: document.getElementById('employeeRating').value,
+      email: document.getElementById('employeeEmail').value.trim(),
+      completedCourses: 0,
+      monthsSinceLastPromotion: 0
+    };
+
+    const newEmployee = dataManager.addEmployee(employeeData);
+    
+    // تحديث قائمة الموظفين العامة
+    employees.push(newEmployee);
+    
+    showNotification(`تم إضافة الموظف ${newEmployee.name} بنجاح!`, 'success');
+    hideAddEmployeeForm();
+    
+    // تحديث قائمة الموظفين إذا كانت مفتوحة
+    const employeesList = document.querySelector('.employees-list');
+    if (employeesList && employeesList.style.display !== 'none') {
+      showEmployeeList();
+    }
+    
+  } catch (error) {
+    showNotification(`خطأ في إضافة الموظف: ${error.message}`, 'warning');
+  }
+}
+
+function switchToEmployee(employeeId) {
+  const employee = dataManager.switchEmployee(employeeId);
+  if (employee) {
+    currentEmployee = employee;
+    
+    // تحديث العرض
+    const score = calculatePromotionReadiness(currentEmployee);
+    const recommendation = getPromotionRecommendation(score, currentEmployee);
+    
+    updateScoreDisplay(score, recommendation);
+    displayEmployeeStats();
+    
+    // إخفاء قائمة الموظفين
+    hideEmployeeList();
+    
+    showNotification(`تم التبديل إلى موظف: ${employee.name}`, 'info');
+  }
+}
+
+// وظائف الفلترة
+function getCurrentFilters() {
+  return {
+    department: document.getElementById('departmentFilter')?.value || 'الكل',
+    performanceRating: document.getElementById('performanceFilter')?.value || 'الكل',
+    readyForPromotion: document.getElementById('readyForPromotionFilter')?.checked || false
+  };
+}
+
+function applyFilters() {
+  // إذا كانت قائمة الموظفين مفتوحة، قم بتحديثها
+  const employeesList = document.querySelector('.employees-list');
+  if (employeesList && employeesList.style.display !== 'none') {
+    showEmployeeList();
+  }
+}
+
+// تحسين وظيفة عرض لوحة المدير
+function showManagerDashboard() {
+  // إظهار أدوات الإدارة
+  const managementTools = document.querySelector('.management-tools');
+  if (managementTools) {
+    managementTools.style.display = 'block';
+  }
+  
+  // الكود الأصلي للوحة المدير
+  const readyEmployees = employees.filter(emp => calculatePromotionReadiness(emp) >= 75);
+  const topPerformers = employees.filter(emp => emp.performanceRating === 'ممتاز');
+  
+  const dashboard = document.querySelector('.manager-dashboard');
+  if (dashboard) {
+    dashboard.style.display = 'block';
+  }
+  
+  // عرض الموظفين الجاهزين للترقية
+  const readyList = document.querySelector('.ready-employees');
+  if (readyList) {
+    readyList.innerHTML = readyEmployees.map(emp => 
+      `<li>🌟 ${emp.name} - ${emp.position} (${calculatePromotionReadiness(emp)}%)</li>`
+    ).join('');
+  }
+  
+  // عرض أعلى الموظفين أداءً
+  const topList = document.querySelector('.top-performers');
+  if (topList) {
+    topList.innerHTML = topPerformers.map(emp => 
+      `<li>⭐ ${emp.name} - ${emp.department}</li>`
+    ).join('');
+  }
+}
+
+function hideManagerDashboard() {
+  // إخفاء أدوات الإدارة
+  const managementTools = document.querySelector('.management-tools');
+  if (managementTools) {
+    managementTools.style.display = 'none';
+  }
+  
+  // إخفاء لوحة المدير
+  const dashboard = document.querySelector('.manager-dashboard');
+  if (dashboard) {
+    dashboard.style.display = 'none';
+  }
+  
+  // إخفاء القوائم المفتوحة
+  hideEmployeeList();
+  hideAddEmployeeForm();
+  
+  showNotification('تم إغلاق لوحة تحكم المدير', 'info');
+}
+
 // تشغيل التطبيق عند تحميل الصفحة
 document.addEventListener('DOMContentLoaded', function() {
-  const initialScore = calculatePromotionReadiness(currentEmployee);
-  const initialRecommendation = getPromotionRecommendation(initialScore, currentEmployee);
-  
-  updateScoreDisplay(initialScore, initialRecommendation);
-  displayEmployeeStats();
+  // التأكد من تحميل البيانات بشكل صحيح
+  try {
+    currentEmployee = dataManager.getCurrentEmployee();
+    
+    const initialScore = calculatePromotionReadiness(currentEmployee);
+    const initialRecommendation = getPromotionRecommendation(initialScore, currentEmployee);
+    
+    updateScoreDisplay(initialScore, initialRecommendation);
+    displayEmployeeStats();
+    
+    showNotification('تم تحميل البيانات بنجاح', 'success');
+    
+  } catch (error) {
+    console.error('خطأ في تحميل البيانات:', error);
+    showNotification('خطأ في تحميل البيانات، يتم استخدام البيانات التجريبية', 'warning');
+    
+    // استخدام البيانات التجريبية كخطة احتياطية
+    dataManager.loadDefaultData();
+    currentEmployee = dataManager.getCurrentEmployee();
+    
+    const initialScore = calculatePromotionReadiness(currentEmployee);
+    const initialRecommendation = getPromotionRecommendation(initialScore, currentEmployee);
+    
+    updateScoreDisplay(initialScore, initialRecommendation);
+    displayEmployeeStats();
+  }
 });
 
 // عرض التنبيهات
@@ -353,3 +706,10 @@ window.hideManagerDashboard = hideManagerDashboard;
 window.generateReport = generateReport;
 window.scheduleTraining = scheduleTraining;
 window.showNotification = showNotification;
+window.showEmployeeList = showEmployeeList;
+window.hideEmployeeList = hideEmployeeList;
+window.showAddEmployeeForm = showAddEmployeeForm;
+window.hideAddEmployeeForm = hideAddEmployeeForm;
+window.addNewEmployee = addNewEmployee;
+window.switchToEmployee = switchToEmployee;
+window.applyFilters = applyFilters;
