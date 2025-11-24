@@ -196,12 +196,108 @@ function toggleManagerView() {
 
 // تصدير التقرير
 function generateReport() {
-  alert('📄 جاري تصدير التقرير...\nسيتم إرسال التقرير عبر البريد الإلكتروني قريباً');
+  // إنشاء تقرير مفصل
+  const reportData = {
+    date: new Date().toLocaleDateString('ar-SA'),
+    totalEmployees: employees.length,
+    readyForPromotion: employees.filter(emp => calculatePromotionReadiness(emp) >= 75).length,
+    averageScore: Math.round(employees.reduce((sum, emp) => sum + calculatePromotionReadiness(emp), 0) / employees.length),
+    topPerformers: employees.filter(emp => emp.performanceRating === 'ممتاز').length
+  };
+
+  const reportContent = `
+📄 تقرير الترقيات والأداء
+التاريخ: ${reportData.date}
+═══════════════════════════
+
+📊 الإحصائيات العامة:
+• إجمالي الموظفين: ${reportData.totalEmployees}
+• الجاهزين للترقية: ${reportData.readyForPromotion}
+• متوسط النقاط: ${reportData.averageScore}%
+• أصحاب الأداء الممتاز: ${reportData.topPerformers}
+
+📋 تفاصيل الموظفين:
+${employees.map(emp => {
+  const score = calculatePromotionReadiness(emp);
+  return `• ${emp.name} - ${emp.position}
+  النقاط: ${score}%
+  التقييم: ${emp.performanceRating}
+  الخبرة: ${emp.yearsOfExperience} سنوات`;
+}).join('\n')}
+
+🎯 التوصيات:
+• تنظيم دورات تدريبية للموظفين ذوي النقاط المنخفضة
+• مراجعة ملفات الموظفين الجاهزين للترقية
+• تحديث معايير التقييم السنوي
+  `;
+
+  // إنشاء ملف قابل للتحميل
+  const blob = new Blob([reportContent], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `تقرير_الترقيات_${new Date().toISOString().split('T')[0]}.txt`;
+  link.click();
+  URL.revokeObjectURL(url);
+
+  // عرض رسالة نجح
+  showNotification('📄 تم تصدير التقرير بنجاح!', 'success');
 }
 
 // جدولة التدريب
 function scheduleTraining() {
-  alert('📅 جاري جدولة التدريب...\nسيتم تحديد مواعيد الدورات التدريبية المناسبة');
+  // تحليل احتياجات التدريب
+  const trainingNeeds = {
+    'تطوير الذات': employees.filter(emp => emp.completedCourses < 3).length,
+    'إدارة المشاريع': employees.filter(emp => emp.performanceRating !== 'ممتاز').length,
+    'التطوير التقني': employees.filter(emp => emp.department === 'تقنية المعلومات' && emp.completedCourses < 5).length
+  };
+
+  const scheduleData = `
+📅 جدولة الدورات التدريبية
+التاريخ: ${new Date().toLocaleDateString('ar-SA')}
+═══════════════════════════
+
+🎓 الدورات المقترحة:
+
+1. دورة تطوير الذات
+   • عدد المحتاجين: ${trainingNeeds['تطوير الذات']} موظف
+   • المدة المقترحة: 3 أيام
+   • التاريخ المقترح: ${new Date(Date.now() + 7*24*60*60*1000).toLocaleDateString('ar-SA')}
+
+2. دورة إدارة المشاريع
+   • عدد المحتاجين: ${trainingNeeds['إدارة المشاريع']} موظف
+   • المدة المقترحة: 5 أيام
+   • التاريخ المقترح: ${new Date(Date.now() + 14*24*60*60*1000).toLocaleDateString('ar-SA')}
+
+3. دورة التطوير التقني
+   • عدد المحتاجين: ${trainingNeeds['التطوير التقني']} موظف
+   • المدة المقترحة: 4 أيام
+   • التاريخ المقترح: ${new Date(Date.now() + 21*24*60*60*1000).toLocaleDateString('ar-SA')}
+
+👥 قائمة الموظفين وتوصيات التدريب:
+${employees.map(emp => {
+  const recommendations = [];
+  if (emp.completedCourses < 3) recommendations.push('تطوير الذات');
+  if (emp.performanceRating !== 'ممتاز') recommendations.push('إدارة المشاريع');
+  if (emp.department === 'تقنية المعلومات' && emp.completedCourses < 5) recommendations.push('التطوير التقني');
+  
+  return `• ${emp.name} - ${emp.position}
+  الدورات المطلوبة: ${recommendations.length > 0 ? recommendations.join(', ') : 'لا توجد دورات مطلوبة حالياً'}`;
+}).join('\n')}
+  `;
+
+  // إنشاء ملف الجدولة
+  const blob = new Blob([scheduleData], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `جدولة_التدريب_${new Date().toISOString().split('T')[0]}.txt`;
+  link.click();
+  URL.revokeObjectURL(url);
+
+  // عرض رسالة نجح
+  showNotification('📅 تم إنشاء جدول التدريب بنجاح!', 'success');
 }
 
 // تشغيل التطبيق عند تحميل الصفحة
@@ -213,6 +309,42 @@ document.addEventListener('DOMContentLoaded', function() {
   displayEmployeeStats();
 });
 
+// عرض التنبيهات
+function showNotification(message, type = 'info') {
+  // إنشاء عنصر التنبيه
+  const notification = document.createElement('div');
+  notification.className = `notification ${type}`;
+  notification.innerHTML = `
+    <span class="notification-icon">
+      ${type === 'success' ? '✅' : type === 'warning' ? '⚠️' : 'ℹ️'}
+    </span>
+    <span class="notification-message">${message}</span>
+    <button class="notification-close" onclick="this.parentElement.remove()">×</button>
+  `;
+  
+  // إضافة التنبيه إلى الصفحة
+  document.body.appendChild(notification);
+  
+  // إزالة التنبيه تلقائياً بعد 5 ثواني
+  setTimeout(() => {
+    if (notification.parentElement) {
+      notification.remove();
+    }
+  }, 5000);
+  
+  // إضافة تأثير الظهور
+  setTimeout(() => notification.classList.add('show'), 100);
+}
+
+// تحسين وظيفة إغلاق لوحة المدير
+function hideManagerDashboard() {
+  const dashboard = document.querySelector('.manager-dashboard');
+  if (dashboard) {
+    dashboard.style.display = 'none';
+    showNotification('تم إغلاق لوحة تحكم المدير', 'info');
+  }
+}
+
 // تصدير الوظائف للاستخدام العام
 window.calculateNewScore = calculateNewScore;
 window.toggleManagerView = toggleManagerView;
@@ -220,3 +352,4 @@ window.showManagerDashboard = showManagerDashboard;
 window.hideManagerDashboard = hideManagerDashboard;
 window.generateReport = generateReport;
 window.scheduleTraining = scheduleTraining;
+window.showNotification = showNotification;
