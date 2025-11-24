@@ -78,8 +78,10 @@ class DataManager {
   }
 
   saveData() {
-    localStorage.setItem('employeesData', JSON.stringify(this.employees));
-    localStorage.setItem('currentEmployeeId', this.currentEmployeeId.toString());
+    if (this.employees && this.currentEmployeeId) {
+      localStorage.setItem('employeesData', JSON.stringify(this.employees));
+      localStorage.setItem('currentEmployeeId', this.currentEmployeeId.toString());
+    }
   }
 
   getCurrentEmployee() {
@@ -173,9 +175,9 @@ class DataManager {
 // إنشاء مدير البيانات العام
 const dataManager = new DataManager();
 
-// الحصول على الموظف الحالي
+// الحصول على الموظف الحالي والموظفين
 let currentEmployee = dataManager.getCurrentEmployee();
-const employees = dataManager.getAllEmployees();
+let employees = dataManager.getAllEmployees();
 
 // حساب نسبة جاهزية الموظف للترقية
 function calculatePromotionReadiness(employeeData) {
@@ -687,15 +689,6 @@ function showNotification(message, type = 'info') {
   
   // إضافة تأثير الظهور
   setTimeout(() => notification.classList.add('show'), 100);
-}
-
-// تحسين وظيفة إغلاق لوحة المدير
-function hideManagerDashboard() {
-  const dashboard = document.querySelector('.manager-dashboard');
-  if (dashboard) {
-    dashboard.style.display = 'none';
-    showNotification('تم إغلاق لوحة تحكم المدير', 'info');
-  }
 }
 
 // تصدير الوظائف للاستخدام العام
