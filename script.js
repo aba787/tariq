@@ -426,7 +426,9 @@ function hideManagerDashboard() {
 // تبديل عرض لوحة المدير
 function toggleManagerView() {
   const dashboard = document.querySelector('.manager-dashboard');
-  if (dashboard) {
+  const managementTools = document.querySelector('.management-tools');
+  
+  if (dashboard && managementTools) {
     if (dashboard.style.display === 'none' || !dashboard.style.display) {
       showManagerDashboard();
     } else {

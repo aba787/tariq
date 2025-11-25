@@ -412,7 +412,7 @@ body {
 }
 
 .filter-controls select:focus {
-  border-color: #28A745;
+  border-color: #8B1538;
   outline: none;
 }
 
@@ -428,13 +428,13 @@ body {
 .employees-list {
   margin-top: 30px;
   padding: 25px;
-  background: linear-gradient(135deg, #E8F4FD, #F0F8FF);
-  border: 2px solid #007BFF;
+  background: linear-gradient(135deg, #F8E8EB, #FFF0F3);
+  border: 2px solid #8B1538;
   border-radius: 15px;
 }
 
 .employees-list h3 {
-  color: #007BFF;
+  color: #8B1538;
   text-align: center;
   margin-bottom: 25px;
 }
@@ -455,9 +455,9 @@ body {
 }
 
 .employee-card:hover {
-  border-color: #007BFF;
+  border-color: #8B1538;
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.1);
+  box-shadow: 0 5px 15px rgba(139, 21, 56, 0.1);
 }
 
 .employee-header {
@@ -468,7 +468,7 @@ body {
 }
 
 .employee-header h4 {
-  color: #007BFF;
+  color: #8B1538;
   margin: 0;
 }
 
@@ -491,7 +491,7 @@ body {
 }
 
 .switch-button {
-  background: linear-gradient(135deg, #007BFF, #0056B3);
+  background: linear-gradient(135deg, #8B1538, #A91D42);
   color: white;
   border: none;
   padding: 8px 15px;
@@ -503,12 +503,12 @@ body {
 }
 
 .switch-button:hover {
-  background: linear-gradient(135deg, #0056B3, #004085);
+  background: linear-gradient(135deg, #A91D42, #C7254E);
 }
 
 .edit-button {
-  background: linear-gradient(135deg, #FFC107, #E0A800);
-  color: #333;
+  background: linear-gradient(135deg, #8B1538, #A91D42);
+  color: white;
   border: none;
   padding: 8px 15px;
   margin: 0 5px;
@@ -519,7 +519,7 @@ body {
 }
 
 .edit-button:hover {
-  background: linear-gradient(135deg, #E0A800, #D39E00);
+  background: linear-gradient(135deg, #A91D42, #C7254E);
 }
 
 .no-results {
@@ -533,13 +533,13 @@ body {
 .add-employee-form, .edit-employee-form {
   margin-top: 30px;
   padding: 25px;
-  background: linear-gradient(135deg, #FFF8E1, #FFFDE7);
-  border: 2px solid #FF9800;
+  background: linear-gradient(135deg, #F8E8EB, #FFF0F3);
+  border: 2px solid #8B1538;
   border-radius: 15px;
 }
 
 .add-employee-form h3, .edit-employee-form h3 {
-  color: #FF9800;
+  color: #8B1538;
   text-align: center;
   margin-bottom: 25px;
 }
@@ -570,7 +570,7 @@ body {
 }
 
 .form-group input:focus, .form-group select:focus {
-  border-color: #FF9800;
+  border-color: #8B1538;
   outline: none;
 }
 
@@ -589,12 +589,12 @@ body {
 }
 
 .courses-management h4 {
-  color: #6F42C1;
+  color: #8B1538;
   margin-bottom: 15px;
 }
 
 .add-course-button {
-  background: linear-gradient(135deg, #6F42C1, #8A5CF5);
+  background: linear-gradient(135deg, #8B1538, #A91D42);
   color: white;
   border: none;
   padding: 10px 20px;
@@ -606,7 +606,7 @@ body {
 }
 
 .add-course-button:hover {
-  background: linear-gradient(135deg, #8A5CF5, #9F6BFF);
+  background: linear-gradient(135deg, #A91D42, #C7254E);
 }
 
 .employee-courses-list {
@@ -630,7 +630,7 @@ body {
 }
 
 .course-info strong {
-  color: #6F42C1;
+  color: #8B1538;
   display: block;
   margin-bottom: 5px;
 }
@@ -687,7 +687,7 @@ body {
 }
 
 .add-course-form h4 {
-  color: #6F42C1;
+  color: #8B1538;
   text-align: center;
   margin-bottom: 20px;
 }
@@ -696,13 +696,13 @@ body {
 .notifications-panel {
   margin-top: 30px;
   padding: 20px;
-  background: linear-gradient(135deg, #E1F5FE, #F0F9FF);
-  border: 2px solid #00BCD4;
+  background: linear-gradient(135deg, #F8E8EB, #FFF0F3);
+  border: 2px solid #8B1538;
   border-radius: 15px;
 }
 
 .notifications-panel h3 {
-  color: #00BCD4;
+  color: #8B1538;
   margin-bottom: 15px;
 }
 
@@ -713,7 +713,7 @@ body {
   margin-bottom: 10px;
   background: white;
   border-radius: 8px;
-  border-left: 4px solid #00BCD4;
+  border-left: 4px solid #8B1538;
 }
 
 .notification-icon {
