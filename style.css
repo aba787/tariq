@@ -310,6 +310,54 @@ body {
   margin-bottom: 25px;
 }
 
+/* تحسين عرض قائمة الفلتر */
+.department-filter-enhanced {
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 14px;
+  border: 2px solid #28A745;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #F8F9FA, #E8F5E8);
+  color: #333;
+  font-weight: 500;
+}
+
+.department-filter-enhanced:focus {
+  outline: none;
+  border-color: #20C997;
+  box-shadow: 0 0 10px rgba(40, 167, 69, 0.3);
+}
+
+.department-filter-enhanced optgroup {
+  background-color: #E8F5E8;
+  color: #28A745;
+  font-weight: bold;
+  font-size: 13px;
+  padding: 5px;
+}
+
+.department-filter-enhanced option {
+  background-color: white;
+  color: #333;
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+.department-filter-enhanced option:hover {
+  background-color: #E8F5E8;
+}
+
+/* عداد الأقسام */
+.department-counter {
+  background: linear-gradient(135deg, #17A2B8, #20C997);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 11px;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
 .tools-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
