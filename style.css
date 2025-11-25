@@ -7,7 +7,7 @@
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #8B1538 0%, #A91D42 100%);
   min-height: 100vh;
   padding: 20px;
   direction: rtl;
@@ -17,10 +17,10 @@ body {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.98);
   border-radius: 20px;
   padding: 30px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px rgba(139, 21, 56, 0.3);
 }
 
 .header {
@@ -69,7 +69,7 @@ body {
 .primary-button:hover {
   background: linear-gradient(135deg, #A91D42, #C7254E);
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(139, 21, 56, 0.3);
+  box-shadow: 0 5px 15px rgba(139, 21, 56, 0.4);
 }
 
 .secondary-button {
@@ -126,9 +126,9 @@ body {
 }
 
 .ready-100 {
-  background: linear-gradient(135deg, #28A745, #34CE57);
+  background: linear-gradient(135deg, #8B1538, #A91D42);
   color: white;
-  box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+  box-shadow: 0 8px 20px rgba(139, 21, 56, 0.3);
 }
 
 .ready-85 {
@@ -299,13 +299,13 @@ body {
 .management-tools {
   margin-top: 30px;
   padding: 25px;
-  background: linear-gradient(135deg, #E8F5E8, #F0F8FF);
-  border: 2px solid #28A745;
+  background: linear-gradient(135deg, #F8E8EB, #FFF0F3);
+  border: 2px solid #8B1538;
   border-radius: 15px;
 }
 
 .management-tools h3 {
-  color: #28A745;
+  color: #8B1538;
   text-align: center;
   margin-bottom: 25px;
 }
@@ -315,17 +315,17 @@ body {
   width: 100%;
   padding: 10px 15px;
   font-size: 14px;
-  border: 2px solid #28A745;
+  border: 2px solid #8B1538;
   border-radius: 8px;
-  background: linear-gradient(135deg, #F8F9FA, #E8F5E8);
+  background: linear-gradient(135deg, #F8F9FA, #F8E8EB);
   color: #333;
   font-weight: 500;
 }
 
 .department-filter-enhanced:focus {
   outline: none;
-  border-color: #20C997;
-  box-shadow: 0 0 10px rgba(40, 167, 69, 0.3);
+  border-color: #A91D42;
+  box-shadow: 0 0 10px rgba(139, 21, 56, 0.3);
 }
 
 .department-filter-enhanced optgroup {
