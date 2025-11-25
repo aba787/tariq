@@ -115,99 +115,196 @@
           <div class="filter-controls">
             <select id="departmentFilter" onchange="applyFilters()">
               <option value="الكل">جميع الأقسام</option>
+              
               <!-- الأقسام الإدارية والمالية -->
-              <option value="الإدارة العامة">الإدارة العامة</option>
-              <option value="المالية والمحاسبة">المالية والمحاسبة</option>
-              <option value="الموارد البشرية">الموارد البشرية</option>
-              <option value="الشؤون الإدارية">الشؤون الإدارية</option>
-              <option value="التدقيق الداخلي">التدقيق الداخلي</option>
-              <option value="التخطيط والتطوير">التخطيط والتطوير</option>
-              <option value="الشؤون القانونية">الشؤون القانونية</option>
-              <option value="العلاقات العامة والإعلام">العلاقات العامة والإعلام</option>
+              <optgroup label="الأقسام الإدارية والمالية">
+                <option value="الإدارة العامة">الإدارة العامة</option>
+                <option value="المالية">المالية</option>
+                <option value="المحاسبة">المحاسبة</option>
+                <option value="الموارد البشرية">الموارد البشرية</option>
+                <option value="الشؤون الإدارية">الشؤون الإدارية</option>
+                <option value="التدقيق الداخلي">التدقيق الداخلي</option>
+                <option value="التخطيط والتطوير">التخطيط والتطوير</option>
+                <option value="الشؤون القانونية">الشؤون القانونية</option>
+                <option value="العلاقات العامة والإعلام">العلاقات العامة والإعلام</option>
+                <option value="الميزانية والتخطيط المالي">الميزانية والتخطيط المالي</option>
+                <option value="الرقابة المالية">الرقابة المالية</option>
+                <option value="إدارة العقود والمناقصات">إدارة العقود والمناقصات</option>
+              </optgroup>
               
               <!-- الأقسام التقنية -->
-              <option value="تقنية المعلومات">تقنية المعلومات</option>
-              <option value="أمن المعلومات">أمن المعلومات</option>
-              <option value="تطوير البرمجيات">تطوير البرمجيات</option>
-              <option value="الشبكات والاتصالات">الشبكات والاتصالات</option>
-              <option value="إدارة قواعد البيانات">إدارة قواعد البيانات</option>
-              <option value="الدعم الفني">الدعم الفني</option>
-              <option value="الذكاء الاصطناعي">الذكاء الاصطناعي</option>
-              <option value="تحليل البيانات">تحليل البيانات</option>
+              <optgroup label="الأقسام التقنية">
+                <option value="تقنية المعلومات">تقنية المعلومات</option>
+                <option value="أمن المعلومات">أمن المعلومات</option>
+                <option value="تطوير البرمجيات">تطوير البرمجيات</option>
+                <option value="الشبكات والاتصالات">الشبكات والاتصالات</option>
+                <option value="إدارة قواعد البيانات">إدارة قواعد البيانات</option>
+                <option value="الدعم الفني">الدعم الفني</option>
+                <option value="الذكاء الاصطناعي">الذكاء الاصطناعي</option>
+                <option value="تحليل البيانات">تحليل البيانات</option>
+                <option value="الحوسبة السحابية">الحوسبة السحابية</option>
+                <option value="تطوير الويب">تطوير الويب</option>
+                <option value="تطوير التطبيقات المحمولة">تطوير التطبيقات المحمولة</option>
+                <option value="إنترنت الأشياء">إنترنت الأشياء</option>
+                <option value="البلوك تشين">البلوك تشين</option>
+                <option value="الروبوتات والأتمتة">الروبوتات والأتمتة</option>
+              </optgroup>
               
               <!-- الأقسام الهندسية -->
-              <option value="الهندسة المدنية">الهندسة المدنية</option>
-              <option value="الهندسة الكهربائية">الهندسة الكهربائية</option>
-              <option value="الهندسة الميكانيكية">الهندسة الميكانيكية</option>
-              <option value="هندسة الاتصالات">هندسة الاتصالات</option>
-              <option value="الهندسة المعمارية">الهندسة المعمارية</option>
-              <option value="هندسة البترول">هندسة البترول</option>
-              <option value="الهندسة الصناعية">الهندسة الصناعية</option>
-              <option value="هندسة البيئة">هندسة البيئة</option>
+              <optgroup label="الأقسام الهندسية">
+                <option value="الهندسة المدنية">الهندسة المدنية</option>
+                <option value="الهندسة الكهربائية">الهندسة الكهربائية</option>
+                <option value="الهندسة الميكانيكية">الهندسة الميكانيكية</option>
+                <option value="هندسة الاتصالات">هندسة الاتصالات</option>
+                <option value="الهندسة المعمارية">الهندسة المعمارية</option>
+                <option value="هندسة البترول والغاز">هندسة البترول والغاز</option>
+                <option value="الهندسة الصناعية">الهندسة الصناعية</option>
+                <option value="هندسة البيئة">هندسة البيئة</option>
+                <option value="هندسة الطيران">هندسة الطيران</option>
+                <option value="هندسة البحرية">هندسة البحرية</option>
+                <option value="هندسة التعدين">هندسة التعدين</option>
+                <option value="الهندسة الكيميائية">الهندسة الكيميائية</option>
+                <option value="هندسة الطاقة المتجددة">هندسة الطاقة المتجددة</option>
+                <option value="هندسة المواد">هندسة المواد</option>
+                <option value="الهندسة الجيولوجية">الهندسة الجيولوجية</option>
+              </optgroup>
               
               <!-- الأقسام الطبية والصحية -->
-              <option value="الطب العام">الطب العام</option>
-              <option value="التمريض">التمريض</option>
-              <option value="الصيدلة">الصيدلة</option>
-              <option value="المختبرات الطبية">المختبرات الطبية</option>
-              <option value="الأشعة والتصوير">الأشعة والتصوير</option>
-              <option value="الصحة والسلامة المهنية">الصحة والسلامة المهنية</option>
-              <option value="العلاج الطبيعي">العلاج الطبيعي</option>
+              <optgroup label="الأقسام الطبية والصحية">
+                <option value="الطب العام">الطب العام</option>
+                <option value="التمريض">التمريض</option>
+                <option value="الصيدلة">الصيدلة</option>
+                <option value="المختبرات الطبية">المختبرات الطبية</option>
+                <option value="الأشعة والتصوير الطبي">الأشعة والتصوير الطبي</option>
+                <option value="الصحة والسلامة المهنية">الصحة والسلامة المهنية</option>
+                <option value="العلاج الطبيعي">العلاج الطبيعي</option>
+                <option value="طب الأسنان">طب الأسنان</option>
+                <option value="الطب البيطري">الطب البيطري</option>
+                <option value="التغذية العلاجية">التغذية العلاجية</option>
+                <option value="الصحة النفسية">الصحة النفسية</option>
+                <option value="الطوارئ والإسعاف">الطوارئ والإسعاف</option>
+                <option value="مكافحة العدوى">مكافحة العدوى</option>
+                <option value="الطب الوقائي">الطب الوقائي</option>
+              </optgroup>
               
               <!-- الأقسام التعليمية -->
-              <option value="الشؤون الأكاديمية">الشؤون الأكاديمية</option>
-              <option value="التطوير التعليمي">التطوير التعليمي</option>
-              <option value="شؤون الطلاب">شؤون الطلاب</option>
-              <option value="المكتبات والمعلومات">المكتبات والمعلومات</option>
-              <option value="البحث العلمي">البحث العلمي</option>
-              <option value="الجودة الأكاديمية">الجودة الأكاديمية</option>
+              <optgroup label="الأقسام التعليمية">
+                <option value="الشؤون الأكاديمية">الشؤون الأكاديمية</option>
+                <option value="التطوير التعليمي">التطوير التعليمي</option>
+                <option value="شؤون الطلاب">شؤون الطلاب</option>
+                <option value="المكتبات والمعلومات">المكتبات والمعلومات</option>
+                <option value="البحث العلمي">البحث العلمي</option>
+                <option value="الجودة الأكاديمية">الجودة الأكاديمية</option>
+                <option value="التعليم الإلكتروني">التعليم الإلكتروني</option>
+                <option value="المناهج والتطوير">المناهج والتطوير</option>
+                <option value="الاعتماد الأكاديمي">الاعتماد الأكاديمي</option>
+                <option value="التعليم المستمر">التعليم المستمر</option>
+                <option value="الأنشطة الطلابية">الأنشطة الطلابية</option>
+              </optgroup>
               
               <!-- أقسام الأمن والسلامة -->
-              <option value="الأمن والحراسة">الأمن والحراسة</option>
-              <option value="السلامة والإطفاء">السلامة والإطفاء</option>
-              <option value="إدارة المخاطر">إدارة المخاطر</option>
-              <option value="الأمن السيبراني">الأمن السيبراني</option>
+              <optgroup label="أقسام الأمن والسلامة">
+                <option value="الأمن والحراسة">الأمن والحراسة</option>
+                <option value="السلامة والإطفاء">السلامة والإطفاء</option>
+                <option value="إدارة المخاطر">إدارة المخاطر</option>
+                <option value="الأمن السيبراني">الأمن السيبراني</option>
+                <option value="أمن المنشآت">أمن المنشآت</option>
+                <option value="التحقيقات الأمنية">التحقيقات الأمنية</option>
+                <option value="إدارة الأزمات">إدارة الأزمات</option>
+                <option value="الأمن الصناعي">الأمن الصناعي</option>
+              </optgroup>
               
               <!-- الأقسام التجارية والتسويقية -->
-              <option value="التسويق والمبيعات">التسويق والمبيعات</option>
-              <option value="خدمة العملاء">خدمة العملاء</option>
-              <option value="التسويق الرقمي">التسويق الرقمي</option>
-              <option value="إدارة العلاقات">إدارة العلاقات</option>
-              <option value="التطوير التجاري">التطوير التجاري</option>
+              <optgroup label="الأقسام التجارية والتسويقية">
+                <option value="التسويق والمبيعات">التسويق والمبيعات</option>
+                <option value="خدمة العملاء">خدمة العملاء</option>
+                <option value="التسويق الرقمي">التسويق الرقمي</option>
+                <option value="إدارة العلاقات">إدارة العلاقات</option>
+                <option value="التطوير التجاري">التطوير التجاري</option>
+                <option value="المبيعات الخارجية">المبيعات الخارجية</option>
+                <option value="إدارة العلامة التجارية">إدارة العلامة التجارية</option>
+                <option value="دراسات السوق">دراسات السوق</option>
+                <option value="التجارة الإلكترونية">التجارة الإلكترونية</option>
+              </optgroup>
               
               <!-- الأقسام اللوجستية والتشغيلية -->
-              <option value="المشتريات والتوريد">المشتريات والتوريد</option>
-              <option value="إدارة المستودعات">إدارة المستودعات</option>
-              <option value="النقل والمواصلات">النقل والمواصلات</option>
-              <option value="العمليات والإنتاج">العمليات والإنتاج</option>
-              <option value="الصيانة والتشغيل">الصيانة والتشغيل</option>
-              <option value="إدارة المرافق">إدارة المرافق</option>
+              <optgroup label="الأقسام اللوجستية والتشغيلية">
+                <option value="المشتريات والتوريد">المشتريات والتوريد</option>
+                <option value="إدارة المستودعات">إدارة المستودعات</option>
+                <option value="النقل والمواصلات">النقل والمواصلات</option>
+                <option value="العمليات والإنتاج">العمليات والإنتاج</option>
+                <option value="الصيانة والتشغيل">الصيانة والتشغيل</option>
+                <option value="إدارة المرافق">إدارة المرافق</option>
+                <option value="إدارة الأصول">إدارة الأصول</option>
+                <option value="التخطيط اللوجستي">التخطيط اللوجستي</option>
+                <option value="إدارة الجودة التشغيلية">إدارة الجودة التشغيلية</option>
+                <option value="إدارة سلسلة التوريد">إدارة سلسلة التوريد</option>
+              </optgroup>
               
               <!-- الأقسام المتخصصة -->
-              <option value="ضمان الجودة">ضمان الجودة</option>
-              <option value="إدارة المشاريع">إدارة المشاريع</option>
-              <option value="التدريب والتطوير">التدريب والتطوير</option>
-              <option value="الاستشارات والدراسات">الاستشارات والدراسات</option>
-              <option value="الترجمة والتحرير">الترجمة والتحرير</option>
-              <option value="الشؤون الدولية">الشؤون الدولية</option>
-              <option value="البيئة والاستدامة">البيئة والاستدامة</option>
-              <option value="الابتكار والتطوير">الابتكار والتطوير</option>
+              <optgroup label="الأقسام المتخصصة">
+                <option value="ضمان الجودة">ضمان الجودة</option>
+                <option value="إدارة المشاريع">إدارة المشاريع</option>
+                <option value="التدريب والتطوير">التدريب والتطوير</option>
+                <option value="الاستشارات والدراسات">الاستشارات والدراسات</option>
+                <option value="الترجمة والتحرير">الترجمة والتحرير</option>
+                <option value="الشؤون الدولية">الشؤون الدولية</option>
+                <option value="البيئة والاستدامة">البيئة والاستدامة</option>
+                <option value="الابتكار والتطوير">الابتكار والتطوير</option>
+                <option value="إدارة التغيير">إدارة التغيير</option>
+                <option value="الأبحاث والتطوير">الأبحاث والتطوير</option>
+                <option value="التحليل الإستراتيجي">التحليل الإستراتيجي</option>
+                <option value="إدارة المعرفة">إدارة المعرفة</option>
+                <option value="التخطيط الإستراتيجي">التخطيط الإستراتيجي</option>
+              </optgroup>
               
               <!-- الأقسام الحكومية المتخصصة -->
-              <option value="الخدمات الحكومية">الخدمات الحكومية</option>
-              <option value="الشؤون البلدية">الشؤون البلدية</option>
-              <option value="التراخيص والتصاريح">التراخيص والتصاريح</option>
-              <option value="الرقابة والتفتيش">الرقابة والتفتيش</option>
-              <option value="الشؤون الاجتماعية">الشؤون الاجتماعية</option>
-              <option value="التخطيط العمراني">التخطيط العمراني</option>
-              <option value="الإحصاء والمعلومات">الإحصاء والمعلومات</option>
-              <option value="الأرشيف والوثائق">الأرشيف والوثائق</option>
+              <optgroup label="الأقسام الحكومية المتخصصة">
+                <option value="الخدمات الحكومية">الخدمات الحكومية</option>
+                <option value="الشؤون البلدية">الشؤون البلدية</option>
+                <option value="التراخيص والتصاريح">التراخيص والتصاريح</option>
+                <option value="الرقابة والتفتيش">الرقابة والتفتيش</option>
+                <option value="الشؤون الاجتماعية">الشؤون الاجتماعية</option>
+                <option value="التخطيط العمراني">التخطيط العمراني</option>
+                <option value="الإحصاء والمعلومات">الإحصاء والمعلومات</option>
+                <option value="الأرشيف والوثائق">الأرشيف والوثائق</option>
+                <option value="الشؤون القنصلية">الشؤون القنصلية</option>
+                <option value="الخدمات الرقمية">الخدمات الرقمية</option>
+                <option value="التحول الرقمي">التحول الرقمي</option>
+                <option value="الحج والعمرة">الحج والعمرة</option>
+                <option value="السياحة والتراث">السياحة والتراث</option>
+                <option value="الثقافة والفنون">الثقافة والفنون</option>
+              </optgroup>
               
               <!-- الأقسام المساندة -->
-              <option value="الاستقبال والضيافة">الاستقبال والضيافة</option>
-              <option value="النظافة والتشجير">النظافة والتشجير</option>
-              <option value="المقاولات والمتابعة">المقاولات والمتابعة</option>
-              <option value="الخدمات العامة">الخدمات العامة</option>
+              <optgroup label="الأقسام المساندة">
+                <option value="الاستقبال والضيافة">الاستقبال والضيافة</option>
+                <option value="النظافة والتشجير">النظافة والتشجير</option>
+                <option value="المقاولات والمتابعة">المقاولات والمتابعة</option>
+                <option value="الخدمات العامة">الخدمات العامة</option>
+                <option value="إدارة الأحداث والفعاليات">إدارة الأحداث والفعاليات</option>
+                <option value="الخدمات اللوجستية">الخدمات اللوجستية</option>
+                <option value="إدارة المكاتب">إدارة المكاتب</option>
+                <option value="الخدمات التقنية المساندة">الخدمات التقنية المساندة</option>
+              </optgroup>
+              
+              <!-- أقسام جديدة متخصصة -->
+              <optgroup label="الأقسام المتطورة والمبتكرة">
+                <option value="تحليل البيانات الضخمة">تحليل البيانات الضخمة</option>
+                <option value="الأمن الغذائي">الأمن الغذائي</option>
+                <option value="الطاقة المتجددة">الطاقة المتجددة</option>
+                <option value="التنمية المستدامة">التنمية المستدامة</option>
+                <option value="الاقتصاد الرقمي">الاقتصاد الرقمي</option>
+                <option value="ريادة الأعمال">ريادة الأعمال</option>
+                <option value="المدن الذكية">المدن الذكية</option>
+                <option value="تقنيات النانو">تقنيات النانو</option>
+                <option value="الطباعة ثلاثية الأبعاد">الطباعة ثلاثية الأبعاد</option>
+                <option value="الواقع المعزز والافتراضي">الواقع المعزز والافتراضي</option>
+                <option value="التمويل التقني">التمويل التقني</option>
+                <option value="إدارة المواهب">إدارة المواهب</option>
+                <option value="التسويق بالمحتوى">التسويق بالمحتوى</option>
+                <option value="إدارة التجربة الرقمية">إدارة التجربة الرقمية</option>
+              </optgroup>
             </select>
             <select id="performanceFilter" onchange="applyFilters()">
               <option value="الكل">جميع التقييمات</option>
