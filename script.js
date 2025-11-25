@@ -878,6 +878,8 @@ function removeCourse(employeeId, courseId) {
 
 // تحديث الفلاتر الديناميكية
 function updateDepartmentFilters() {
+  console.log('تحديث فلاتر الأقسام...');
+  
   // قائمة شاملة بجميع الأقسام المتاحة
   const allDepartments = [
     'الإدارة العامة',
@@ -1014,46 +1016,63 @@ function updateDepartmentFilters() {
   const addDepartmentSelect = document.getElementById('employeeDepartment');
   const editDepartmentSelect = document.getElementById('editEmployeeDepartment');
   
+  console.log('تحديث فلتر الأقسام الرئيسي...');
   if (departmentSelect) {
-    const currentValue = departmentSelect.value;
-    departmentSelect.innerHTML = '<option value="الكل">🏢 جميع الأقسام - اختر من القائمة الشاملة (120+ قسم)</option>';
-    
-    allDepartments.forEach(dept => {
-      const option = document.createElement('option');
-      option.value = dept;
-      option.textContent = `📁 ${dept}`;
-      departmentSelect.appendChild(option);
-    });
-    
-    // استعادة القيمة المحددة سابقاً
-    if (currentValue && allDepartments.includes(currentValue)) {
-      departmentSelect.value = currentValue;
+    try {
+      const currentValue = departmentSelect.value;
+      departmentSelect.innerHTML = '<option value="الكل">🏢 جميع الأقسام - اختر من القائمة الشاملة (120+ قسم)</option>';
+      
+      allDepartments.forEach(dept => {
+        const option = document.createElement('option');
+        option.value = dept;
+        option.textContent = `📁 ${dept}`;
+        departmentSelect.appendChild(option);
+      });
+      
+      // استعادة القيمة المحددة سابقاً
+      if (currentValue && allDepartments.includes(currentValue)) {
+        departmentSelect.value = currentValue;
+      }
+      
+      console.log(`تم تحديث فلتر الأقسام بـ ${allDepartments.length} قسم`);
+    } catch (error) {
+      console.error('خطأ في تحديث فلتر الأقسام:', error);
     }
   }
   
   // تحديث قوائم الأقسام في النماذج
-  [addDepartmentSelect, editDepartmentSelect].forEach(select => {
+  [addDepartmentSelect, editDepartmentSelect].forEach((select, index) => {
     if (select) {
-      const currentValue = select.value;
-      const firstOption = select.querySelector('option');
-      select.innerHTML = '';
-      
-      if (firstOption) {
-        select.appendChild(firstOption);
-      }
-      
-      departments.forEach(dept => {
-        const option = document.createElement('option');
-        option.value = dept;
-        option.textContent = dept;
-        select.appendChild(option);
-      });
-      
-      if (currentValue && departments.includes(currentValue)) {
-        select.value = currentValue;
+      try {
+        console.log(`تحديث قائمة الأقسام ${index + 1}...`);
+        const currentValue = select.value;
+        const firstOption = select.querySelector('option[value=""]');
+        select.innerHTML = '';
+        
+        // إضافة الخيار الفارغ إذا كان موجوداً
+        if (firstOption) {
+          select.appendChild(firstOption.cloneNode(true));
+        }
+        
+        allDepartments.forEach(dept => {
+          const option = document.createElement('option');
+          option.value = dept;
+          option.textContent = dept;
+          select.appendChild(option);
+        });
+        
+        if (currentValue && allDepartments.includes(currentValue)) {
+          select.value = currentValue;
+        }
+        
+        console.log(`تم تحديث النموذج ${index + 1} بـ ${allDepartments.length} قسم`);
+      } catch (error) {
+        console.error(`خطأ في تحديث النموذج ${index + 1}:`, error);
       }
     }
   });
+  
+  console.log('تم الانتهاء من تحديث جميع فلاتر الأقسام');
 }
 
 // تحسين وظيفة عرض لوحة المدير
@@ -1112,52 +1131,78 @@ function hideManagerDashboard() {
 
 // تشغيل التطبيق عند تحميل الصفحة
 document.addEventListener('DOMContentLoaded', function() {
-  // التأكد من تحميل البيانات بشكل صحيح
-  try {
-    // التحقق من وجود مدير البيانات
-    if (!dataManager) {
-      console.log('إعادة تهيئة مدير البيانات...');
-      if (!initializeApp()) {
-        throw new Error('فشل في تهيئة التطبيق');
+  // إضافة شاشة تحميل
+  const loadingScreen = document.createElement('div');
+  loadingScreen.id = 'loadingScreen';
+  loadingScreen.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #8B1538 0%, #A91D42 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+  `;
+  loadingScreen.innerHTML = `
+    <div style="text-align: center;">
+      <h2 style="margin-bottom: 20px; font-size: 2rem;">🌟 تطبيق ترقَّى</h2>
+      <div style="width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid white; border-radius: 50%; animation: spin 1s linear infinite; margin: 20px auto;"></div>
+      <p style="font-size: 1.2rem; margin-top: 20px;">جاري تحميل التطبيق...</p>
+    </div>
+    <style>
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
       }
-    }
-    
-    currentEmployee = dataManager.getCurrentEmployee();
-    
-    // التحقق من وجود موظف حالي
-    if (!currentEmployee) {
-      console.log('لا يوجد موظف حالي، استخدام أول موظف');
-      const allEmployees = dataManager.getAllEmployees();
-      if (allEmployees.length > 0) {
-        currentEmployee = allEmployees[0];
-        dataManager.currentEmployeeId = currentEmployee.id;
-      } else {
-        throw new Error('لا يوجد موظفين في البيانات');
-      }
-    }
-    
-    const initialScore = calculatePromotionReadiness(currentEmployee);
-    const initialRecommendation = getPromotionRecommendation(initialScore, currentEmployee);
-    
-    updateScoreDisplay(initialScore, initialRecommendation);
-    displayEmployeeStats();
-    
-    // تحديث الفلاتر الديناميكية
-    updateDepartmentFilters();
-    
-    showNotification('تم تحميل التطبيق بنجاح! 🎉', 'success');
-    
-  } catch (error) {
-    console.error('خطأ في تحميل البيانات:', error);
-    showNotification('خطأ في تحميل البيانات، يتم استخدام البيانات التجريبية', 'warning');
-    
-    // استخدام البيانات التجريبية كخطة احتياطية
+    </style>
+  `;
+  document.body.appendChild(loadingScreen);
+  
+  // تأخير التحميل قليلاً لإظهار شاشة التحميل
+  setTimeout(() => {
     try {
+      // إعادة تعيين مدير البيانات تماماً
+      dataManager = null;
+      currentEmployee = null;
+      employees = null;
+      
+      console.log('بدء تهيئة التطبيق...');
+      
+      // إنشاء مدير بيانات جديد
       dataManager = new DataManager();
-      dataManager.loadDefaultData();
+      
+      // التحقق من البيانات
+      const allEmployees = dataManager.getAllEmployees();
+      console.log(`تم تحميل ${allEmployees.length} موظف`);
+      
+      if (allEmployees.length === 0) {
+        console.log('لا توجد بيانات، تحميل البيانات التجريبية...');
+        dataManager.loadDefaultData();
+      }
+      
+      // تعيين الموظف الحالي
       currentEmployee = dataManager.getCurrentEmployee();
       employees = dataManager.getAllEmployees();
       
+      if (!currentEmployee && employees.length > 0) {
+        currentEmployee = employees[0];
+        dataManager.currentEmployeeId = currentEmployee.id;
+        dataManager.saveData();
+      }
+      
+      if (!currentEmployee) {
+        throw new Error('لا يمكن تحميل بيانات الموظفين');
+      }
+      
+      console.log(`الموظف الحالي: ${currentEmployee.name}`);
+      
+      // تحديث واجهة المستخدم
       const initialScore = calculatePromotionReadiness(currentEmployee);
       const initialRecommendation = getPromotionRecommendation(initialScore, currentEmployee);
       
@@ -1165,39 +1210,124 @@ document.addEventListener('DOMContentLoaded', function() {
       displayEmployeeStats();
       updateDepartmentFilters();
       
-      showNotification('تم تحميل البيانات التجريبية', 'info');
-    } catch (fallbackError) {
-      console.error('خطأ حرج:', fallbackError);
-      showNotification('خطأ حرج في تحميل التطبيق', 'warning');
+      // إزالة شاشة التحميل
+      document.body.removeChild(loadingScreen);
+      
+      // عرض رسالة نجاح
+      setTimeout(() => {
+        showNotification('🎉 تم تحميل التطبيق بنجاح!', 'success');
+      }, 500);
+      
+      console.log('تم تحميل التطبيق بنجاح');
+      
+    } catch (error) {
+      console.error('خطأ في تحميل التطبيق:', error);
+      
+      // إزالة شاشة التحميل حتى في حالة الخطأ
+      if (document.getElementById('loadingScreen')) {
+        document.body.removeChild(loadingScreen);
+      }
+      
+      // محاولة استرداد الوضع
+      try {
+        console.log('محاولة استرداد الوضع...');
+        dataManager = new DataManager();
+        dataManager.loadDefaultData();
+        
+        currentEmployee = dataManager.getAllEmployees()[0];
+        employees = dataManager.getAllEmployees();
+        
+        const initialScore = calculatePromotionReadiness(currentEmployee);
+        const initialRecommendation = getPromotionRecommendation(initialScore, currentEmployee);
+        
+        updateScoreDisplay(initialScore, initialRecommendation);
+        displayEmployeeStats();
+        updateDepartmentFilters();
+        
+        showNotification('⚠️ تم تحميل البيانات التجريبية', 'warning');
+        
+      } catch (criticalError) {
+        console.error('خطأ حرج:', criticalError);
+        
+        // عرض رسالة خطأ للمستخدم
+        document.body.innerHTML = `
+          <div style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background: linear-gradient(135deg, #8B1538 0%, #A91D42 100%); color: white; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 20px;">
+            <div>
+              <h1 style="font-size: 3rem; margin-bottom: 20px;">⚠️</h1>
+              <h2 style="margin-bottom: 20px;">خطأ في تحميل التطبيق</h2>
+              <p style="margin-bottom: 30px; font-size: 1.2rem;">نعتذر، حدث خطأ في تحميل التطبيق</p>
+              <button onclick="window.location.reload()" style="background: white; color: #8B1538; border: none; padding: 15px 30px; border-radius: 25px; font-size: 1.1rem; font-weight: bold; cursor: pointer;">
+                إعادة تحميل الصفحة
+              </button>
+            </div>
+          </div>
+        `;
+      }
     }
-  }
+  }, 1000); // تأخير ثانية واحدة لإظهار شاشة التحميل
 });
 
-// عرض التنبيهات
+// معالج أخطاء عام
+window.addEventListener('error', function(event) {
+  console.error('خطأ JavaScript:', event.error);
+  showNotification('حدث خطأ في التطبيق، يرجى إعادة تحميل الصفحة إذا استمرت المشكلة', 'warning');
+});
+
+window.addEventListener('unhandledrejection', function(event) {
+  console.error('Promise مرفوض:', event.reason);
+  showNotification('خطأ في معالجة البيانات', 'warning');
+});
+
+// عرض التنبيهات مع معالجة أخطاء محسنة
 function showNotification(message, type = 'info') {
-  // إنشاء عنصر التنبيه
-  const notification = document.createElement('div');
-  notification.className = `notification ${type}`;
-  notification.innerHTML = `
-    <span class="notification-icon">
-      ${type === 'success' ? '✅' : type === 'warning' ? '⚠️' : 'ℹ️'}
-    </span>
-    <span class="notification-message">${message}</span>
-    <button class="notification-close" onclick="this.parentElement.remove()">×</button>
-  `;
-  
-  // إضافة التنبيه إلى الصفحة
-  document.body.appendChild(notification);
-  
-  // إزالة التنبيه تلقائياً بعد 5 ثواني
-  setTimeout(() => {
-    if (notification.parentElement) {
-      notification.remove();
+  try {
+    // التحقق من وجود عنصر body
+    if (!document.body) {
+      console.error('لا يمكن عرض التنبيه: عنصر body غير موجود');
+      return;
     }
-  }, 5000);
-  
-  // إضافة تأثير الظهور
-  setTimeout(() => notification.classList.add('show'), 100);
+    
+    // إنشاء عنصر التنبيه
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `
+      <span class="notification-icon">
+        ${type === 'success' ? '✅' : type === 'warning' ? '⚠️' : 'ℹ️'}
+      </span>
+      <span class="notification-message">${message}</span>
+      <button class="notification-close" onclick="this.parentElement.remove()">×</button>
+    `;
+    
+    // إضافة التنبيه إلى الصفحة
+    document.body.appendChild(notification);
+    
+    // إزالة التنبيه تلقائياً بعد 5 ثواني
+    setTimeout(() => {
+      try {
+        if (notification && notification.parentElement) {
+          notification.remove();
+        }
+      } catch (removeError) {
+        console.warn('خطأ في إزالة التنبيه:', removeError);
+      }
+    }, 5000);
+    
+    // إضافة تأثير الظهور
+    setTimeout(() => {
+      try {
+        if (notification) {
+          notification.classList.add('show');
+        }
+      } catch (showError) {
+        console.warn('خطأ في إظهار التنبيه:', showError);
+      }
+    }, 100);
+    
+  } catch (error) {
+    console.error('خطأ في إنشاء التنبيه:', error);
+    // عرض تنبيه بسيط في وحدة التحكم
+    console.log(`تنبيه: ${message}`);
+  }
 }
 
 // وظيفة إدارة الدورات المبسطة
