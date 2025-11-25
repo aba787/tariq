@@ -320,6 +320,9 @@ body {
   background: linear-gradient(135deg, #F8F9FA, #F8E8EB);
   color: #333;
   font-weight: 500;
+  min-height: 200px;
+  max-height: 300px;
+  overflow-y: auto;
 }
 
 .department-filter-enhanced:focus {
@@ -833,6 +836,122 @@ body {
 
 .employee-card .ready-low {
   background: linear-gradient(135deg, #F44336, #EF5350);
+}
+
+/* مدير الدورات المبسط */
+.course-manager-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.course-manager-form {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(139, 21, 56, 0.3);
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.course-manager-form h3 {
+  color: #8B1538;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.course-manager-form h4 {
+  color: #8B1538;
+  margin: 20px 0 10px 0;
+}
+
+.current-courses {
+  border: 2px solid #E0E0E0;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
+  background: #F8F9FA;
+}
+
+.courses-list {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.course-item-simple {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  background: white;
+  border: 1px solid #E0E0E0;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.course-item-simple .remove-btn {
+  background: #DC3545;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.add-course-section {
+  border: 2px solid #E0E0E0;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.add-course-section input {
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0;
+  border: 1px solid #E0E0E0;
+  border-radius: 5px;
+}
+
+.add-course-section .add-btn {
+  background: linear-gradient(135deg, #8B1538, #A91D42);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.course-actions {
+  text-align: center;
+}
+
+.course-button {
+  background: linear-gradient(135deg, #8B1538, #A91D42);
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  margin: 0 5px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
+}
+
+.course-button:hover {
+  background: linear-gradient(135deg, #A91D42, #C7254E);
 }
 
 /* تأثيرات التحميل */

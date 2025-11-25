@@ -577,6 +577,7 @@ function showEmployeeList() {
           <div class="employee-actions">
             <button onclick="switchToEmployee(${emp.id})" class="switch-button">عرض التفاصيل</button>
             <button onclick="showEditEmployeeForm(${emp.id})" class="edit-button">✏️ تعديل البيانات</button>
+            <button onclick="showEmployeeCourseManager(${emp.id})" class="course-button">📚 إدارة الدورات</button>
           </div>
         </div>
       `;
@@ -1068,6 +1069,95 @@ function showNotification(message, type = 'info') {
   setTimeout(() => notification.classList.add('show'), 100);
 }
 
+// وظيفة إدارة الدورات المبسطة
+function showEmployeeCourseManager(employeeId) {
+  const employee = employees.find(emp => emp.id === employeeId);
+  if (!employee) return;
+
+  const courseManagerHTML = `
+    <div class="course-manager-overlay" id="courseManagerOverlay">
+      <div class="course-manager-form">
+        <h3>📚 إدارة دورات ${employee.name}</h3>
+        
+        <div class="current-courses">
+          <h4>الدورات الحالية (${employee.completedCourses || 0})</h4>
+          <div class="courses-list" id="currentCoursesList">
+            ${(employee.courses || []).map(course => `
+              <div class="course-item-simple">
+                <span>${course.name} - ${course.date || 'غير محدد'}</span>
+                <button onclick="removeCourseSimple(${employeeId}, ${course.id})" class="remove-btn">حذف</button>
+              </div>
+            `).join('') || '<p>لا توجد دورات مسجلة</p>'}
+          </div>
+        </div>
+
+        <div class="add-course-section">
+          <h4>إضافة دورة جديدة</h4>
+          <input type="text" id="quickCourseName" placeholder="اسم الدورة" />
+          <input type="date" id="quickCourseDate" />
+          <button onclick="addQuickCourse(${employeeId})" class="add-btn">إضافة</button>
+        </div>
+
+        <div class="course-actions">
+          <button onclick="closeCourseManager()" class="close-button">إغلاق</button>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  document.body.insertAdjacentHTML('beforeend', courseManagerHTML);
+}
+
+function addQuickCourse(employeeId) {
+  const courseName = document.getElementById('quickCourseName').value.trim();
+  const courseDate = document.getElementById('quickCourseDate').value;
+  
+  if (!courseName) {
+    showNotification('يرجى إدخال اسم الدورة', 'warning');
+    return;
+  }
+
+  const courseData = {
+    name: courseName,
+    date: courseDate || new Date().toISOString().split('T')[0],
+    duration: 8,
+    points: 5
+  };
+
+  const addedCourse = dataManager.addCourseToEmployee(employeeId, courseData);
+  
+  if (addedCourse) {
+    employees = dataManager.getAllEmployees();
+    showNotification(`تم إضافة دورة "${courseName}" بنجاح!`, 'success');
+    
+    // إعادة فتح مدير الدورات لإظهار التحديث
+    closeCourseManager();
+    setTimeout(() => showEmployeeCourseManager(employeeId), 100);
+  }
+}
+
+function removeCourseSimple(employeeId, courseId) {
+  if (confirm('هل تريد حذف هذه الدورة؟')) {
+    const removed = dataManager.removeCourseFromEmployee(employeeId, courseId);
+    
+    if (removed) {
+      employees = dataManager.getAllEmployees();
+      showNotification('تم حذف الدورة بنجاح!', 'success');
+      
+      // إعادة فتح مدير الدورات لإظهار التحديث
+      closeCourseManager();
+      setTimeout(() => showEmployeeCourseManager(employeeId), 100);
+    }
+  }
+}
+
+function closeCourseManager() {
+  const overlay = document.getElementById('courseManagerOverlay');
+  if (overlay) {
+    overlay.remove();
+  }
+}
+
 // تصدير الوظائف للاستخدام العام
 window.calculateNewScore = calculateNewScore;
 window.toggleManagerView = toggleManagerView;
@@ -1091,3 +1181,7 @@ window.hideAddCourseForm = hideAddCourseForm;
 window.addCourseToEmployee = addCourseToEmployee;
 window.removeCourse = removeCourse;
 window.updateDepartmentFilters = updateDepartmentFilters;
+window.showEmployeeCourseManager = showEmployeeCourseManager;
+window.addQuickCourse = addQuickCourse;
+window.removeCourseSimple = removeCourseSimple;
+window.closeCourseManager = closeCourseManager;
