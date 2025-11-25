@@ -73,14 +73,14 @@ body {
 }
 
 .secondary-button {
-  background: linear-gradient(135deg, #6C757D, #868E96);
+  background: linear-gradient(135deg, #8B1538, #A91D42);
   color: white;
 }
 
 .secondary-button:hover {
-  background: linear-gradient(135deg, #868E96, #ADB5BD);
+  background: linear-gradient(135deg, #A91D42, #C7254E);
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+  box-shadow: 0 5px 15px rgba(139, 21, 56, 0.3);
 }
 
 .promotion-card {
@@ -258,7 +258,7 @@ body {
 }
 
 .action-button {
-  background: linear-gradient(135deg, #17A2B8, #20C997);
+  background: linear-gradient(135deg, #8B1538, #A91D42);
   color: white;
   border: none;
   padding: 12px 25px;
@@ -271,9 +271,9 @@ body {
 }
 
 .action-button:hover {
-  background: linear-gradient(135deg, #20C997, #28A745);
+  background: linear-gradient(135deg, #A91D42, #C7254E);
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(23, 162, 184, 0.3);
+  box-shadow: 0 5px 15px rgba(139, 21, 56, 0.3);
 }
 
 .close-button {
@@ -373,12 +373,12 @@ body {
 }
 
 .tool-card h4 {
-  color: #28A745;
+  color: #8B1538;
   margin-bottom: 15px;
 }
 
 .tool-button {
-  background: linear-gradient(135deg, #28A745, #34CE57);
+  background: linear-gradient(135deg, #8B1538, #A91D42);
   color: white;
   border: none;
   padding: 10px 20px;
@@ -390,7 +390,7 @@ body {
 }
 
 .tool-button:hover {
-  background: linear-gradient(135deg, #34CE57, #40D869);
+  background: linear-gradient(135deg, #A91D42, #C7254E);
   transform: translateY(-2px);
 }
 
@@ -747,17 +747,17 @@ body {
 }
 
 .notification.success {
-  background: linear-gradient(135deg, #28A745, #34CE57);
+  background: linear-gradient(135deg, #8B1538, #A91D42);
   color: white;
 }
 
 .notification.warning {
-  background: linear-gradient(135deg, #FFC107, #FFD54F);
-  color: #333;
+  background: linear-gradient(135deg, #8B1538, #A91D42);
+  color: white;
 }
 
 .notification.info {
-  background: linear-gradient(135deg, #17A2B8, #20C997);
+  background: linear-gradient(135deg, #8B1538, #A91D42);
   color: white;
 }
 
@@ -824,7 +824,7 @@ body {
 
 /* تحسينات إضافية */
 .employee-card .ready-100 {
-  background: linear-gradient(135deg, #28A745, #34CE57);
+  background: linear-gradient(135deg, #8B1538, #A91D42);
 }
 
 .employee-card .ready-85 {
