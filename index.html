@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 
@@ -19,13 +18,13 @@
         <button onclick="toggleManagerView()" class="secondary-button">لوحة تحكم المدير</button>
       </div>
     </div>
-    
+
     <div class="promotion-card main-score-card">
       <h3>📊 نسبة الجاهزية للترقية</h3>
       <div class="readiness-score ready-85">85%</div>
       <p class="recommendation-text">🔸 ينقصك دورة "تطوير الذات" للوصول إلى 100%</p>
     </div>
-    
+
     <div class="promotion-card">
       <h3>📈 الملف الشخصي</h3>
       <ul class="employee-stats">
@@ -35,7 +34,7 @@
         <li>آخر ترقية: منذ 18 شهر</li>
       </ul>
     </div>
-    
+
     <div class="promotion-card">
       <h3>🎯 التوصيات الشخصية</h3>
       <ul class="recommendations-list">
@@ -49,7 +48,7 @@
     <!-- لوحة تحكم المدير -->
     <div class="manager-dashboard" style="display: none;">
       <h2>🏢 لوحة تحكم المدير</h2>
-      
+
       <div class="dashboard-grid">
         <div class="dashboard-card">
           <h4>🔝 أعلى الموظفين أداءً</h4>
@@ -57,14 +56,14 @@
             <li>⭐ أحمد محمد - تقنية المعلومات</li>
           </ul>
         </div>
-        
+
         <div class="dashboard-card">
           <h4>💼 الموظفين الجاهزين للترقية</h4>
           <ul class="ready-employees">
             <li>🌟 أحمد محمد - محلل نظم (85%)</li>
           </ul>
         </div>
-        
+
         <div class="dashboard-card">
           <h4>📈 احتياج الإدارة لدورات تطويرية</h4>
           <ul>
@@ -73,7 +72,7 @@
             <li>🔧 دورة التطوير التقني - 25% من الموظفين</li>
           </ul>
         </div>
-        
+
         <div class="dashboard-card stats-card">
           <h4>📊 إحصائيات سريعة</h4>
           <div class="stats-grid">
@@ -92,25 +91,25 @@
           </div>
         </div>
       </div>
-      
+
       <div class="dashboard-actions">
         <button onclick="generateReport()" class="action-button">📄 تصدير التقرير</button>
         <button onclick="scheduleTraining()" class="action-button">📅 جدولة التدريب</button>
         <button onclick="hideManagerDashboard()" class="close-button">إغلاق اللوحة</button>
       </div>
     </div>
-    
+
     <!-- أدوات الإدارة والفلترة -->
     <div class="management-tools" style="display: none;">
       <h3>🔧 أدوات الإدارة</h3>
-      
+
       <div class="tools-grid">
         <div class="tool-card">
           <h4>👥 إدارة الموظفين</h4>
           <button onclick="showEmployeeList()" class="tool-button">عرض قائمة الموظفين</button>
           <button onclick="showAddEmployeeForm()" class="tool-button">إضافة موظف جديد</button>
         </div>
-        
+
         <div class="tool-card">
           <h4>🔍 فلترة البيانات</h4>
           <div class="filter-controls">
@@ -128,6 +127,9 @@
               <option value="الأمن والسلامة">الأمن والسلامة</option>
               <option value="التطوير والبحوث">التطوير والبحوث</option>
               <option value="الشؤون القانونية">الشؤون القانونية</option>
+              <option value="المشتريات">المشتريات</option>
+              <option value="الجودة">الجودة</option>
+              <option value="التدقيق الداخلي">التدقيق الداخلي</option>
             </select>
             <select id="performanceFilter" onchange="applyFilters()">
               <option value="الكل">جميع التقييمات</option>
@@ -174,6 +176,17 @@
               <option value="المالية">المالية</option>
               <option value="الإدارة العامة">الإدارة العامة</option>
               <option value="الموارد البشرية">الموارد البشرية</option>
+              <option value="التسويق">التسويق</option>
+              <option value="المبيعات">المبيعات</option>
+              <option value="خدمة العملاء">خدمة العملاء</option>
+              <option value="الهندسة">الهندسة</option>
+              <option value="العمليات">العمليات</option>
+              <option value="الأمن والسلامة">الأمن والسلامة</option>
+              <option value="التطوير والبحوث">التطوير والبحوث</option>
+              <option value="الشؤون القانونية">الشؤون القانونية</option>
+              <option value="المشتريات">المشتريات</option>
+              <option value="الجودة">الجودة</option>
+              <option value="التدقيق الداخلي">التدقيق الداخلي</option>
             </select>
           </div>
           <div class="form-group">
@@ -231,6 +244,9 @@
               <option value="الأمن والسلامة">الأمن والسلامة</option>
               <option value="التطوير والبحوث">التطوير والبحوث</option>
               <option value="الشؤون القانونية">الشؤون القانونية</option>
+              <option value="المشتريات">المشتريات</option>
+              <option value="الجودة">الجودة</option>
+              <option value="التدقيق الداخلي">التدقيق الداخلي</option>
             </select>
           </div>
           <div class="form-group">
@@ -279,7 +295,7 @@
       </div>
     </div>
   </div>
-  
+
   <script src="script.js"></script>
 </body>
 

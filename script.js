@@ -175,6 +175,74 @@ class DataManager {
     }
     return null;
   }
+
+  updateEmployee(employeeId, updatedData) {
+    const employeeIndex = this.employees.findIndex(emp => emp.id === employeeId);
+    if (employeeIndex !== -1) {
+      // التحقق من صحة البيانات الأساسية
+      if (!this.validateEmployeeData(updatedData)) {
+        throw new Error('بيانات الموظف غير صحيحة');
+      }
+
+      // تحديث البيانات مع الحفاظ على المعرف وتاريخ الانضمام
+      this.employees[employeeIndex] = {
+        ...this.employees[employeeIndex],
+        ...updatedData,
+        id: employeeId,
+        joinDate: this.employees[employeeIndex].joinDate || updatedData.joinDate
+      };
+
+      this.saveData();
+      return this.employees[employeeIndex];
+    }
+    return null;
+  }
+
+  addCourseToEmployee(employeeId, courseData) {
+    const employee = this.employees.find(emp => emp.id === employeeId);
+    if (employee) {
+      if (!employee.courses) {
+        employee.courses = [];
+      }
+      
+      const newCourse = {
+        id: Date.now(),
+        name: courseData.name,
+        date: courseData.date,
+        duration: courseData.duration,
+        points: courseData.points || 5, // نقاط افتراضية للدورة
+        ...courseData
+      };
+      
+      employee.courses.push(newCourse);
+      employee.completedCourses = employee.courses.length;
+      
+      this.saveData();
+      return newCourse;
+    }
+    return null;
+  }
+
+  removeCourseFromEmployee(employeeId, courseId) {
+    const employee = this.employees.find(emp => emp.id === employeeId);
+    if (employee && employee.courses) {
+      employee.courses = employee.courses.filter(course => course.id !== courseId);
+      employee.completedCourses = employee.courses.length;
+      this.saveData();
+      return true;
+    }
+    return false;
+  }
+
+  getAllDepartments() {
+    const departments = new Set();
+    this.employees.forEach(emp => {
+      if (emp.department) {
+        departments.add(emp.department);
+      }
+    });
+    return Array.from(departments).sort();
+  }
 }
 
 // إنشاء مدير البيانات العام
@@ -220,13 +288,22 @@ function calculatePromotionReadiness(employeeData) {
   }
 
   // الدورات التدريبية (20 نقطة)
-  if (employeeData.completedCourses >= 5) {
-    score += 20;
-  } else if (employeeData.completedCourses >= 3) {
-    score += 15;
-  } else if (employeeData.completedCourses >= 1) {
-    score += 10;
+  let coursesScore = 0;
+  if (employeeData.courses && employeeData.courses.length > 0) {
+    // حساب النقاط بناء على مجموع نقاط الدورات
+    const totalCoursePoints = employeeData.courses.reduce((sum, course) => sum + (course.points || 5), 0);
+    coursesScore = Math.min(totalCoursePoints, 20); // الحد الأقصى 20 نقطة
+  } else {
+    // الطريقة التقليدية للموظفين القدامى
+    if (employeeData.completedCourses >= 5) {
+      coursesScore = 20;
+    } else if (employeeData.completedCourses >= 3) {
+      coursesScore = 15;
+    } else if (employeeData.completedCourses >= 1) {
+      coursesScore = 10;
+    }
   }
+  score += coursesScore;
 
   // آخر ترقية (10 نقاط)
   const monthsSinceLastPromotion = employeeData.monthsSinceLastPromotion || 0;
@@ -492,6 +569,7 @@ function showEmployeeList() {
           </div>
           <div class="employee-actions">
             <button onclick="switchToEmployee(${emp.id})" class="switch-button">عرض التفاصيل</button>
+            <button onclick="showEditEmployeeForm(${emp.id})" class="edit-button">✏️ تعديل البيانات</button>
           </div>
         </div>
       `;
@@ -597,6 +675,248 @@ function applyFilters() {
   }
 }
 
+// وظائف تعديل الموظفين
+function showEditEmployeeForm(employeeId) {
+  const employee = employees.find(emp => emp.id === employeeId);
+  if (!employee) return;
+
+  const formDiv = document.querySelector('.edit-employee-form');
+  if (formDiv) {
+    formDiv.style.display = 'block';
+    
+    // ملء النموذج بالبيانات الحالية
+    document.getElementById('editEmployeeId').value = employee.id;
+    document.getElementById('editEmployeeName').value = employee.name;
+    document.getElementById('editEmployeePosition').value = employee.position;
+    document.getElementById('editEmployeeDepartment').value = employee.department;
+    document.getElementById('editEmployeeExperience').value = employee.yearsOfExperience;
+    document.getElementById('editEmployeeRating').value = employee.performanceRating;
+    document.getElementById('editEmployeeEmail').value = employee.email || '';
+    document.getElementById('editEmployeeCourses').value = employee.completedCourses || 0;
+    document.getElementById('editEmployeeMonths').value = employee.monthsSinceLastPromotion || 0;
+    
+    // عرض الدورات المسجلة
+    displayEmployeeCourses(employee);
+  }
+}
+
+function hideEditEmployeeForm() {
+  const formDiv = document.querySelector('.edit-employee-form');
+  if (formDiv) {
+    formDiv.style.display = 'none';
+  }
+}
+
+function updateEmployee(event) {
+  event.preventDefault();
+  
+  try {
+    const employeeId = parseInt(document.getElementById('editEmployeeId').value);
+    const updatedData = {
+      name: document.getElementById('editEmployeeName').value.trim(),
+      position: document.getElementById('editEmployeePosition').value.trim(),
+      department: document.getElementById('editEmployeeDepartment').value,
+      yearsOfExperience: parseInt(document.getElementById('editEmployeeExperience').value),
+      performanceRating: document.getElementById('editEmployeeRating').value,
+      email: document.getElementById('editEmployeeEmail').value.trim(),
+      completedCourses: parseInt(document.getElementById('editEmployeeCourses').value),
+      monthsSinceLastPromotion: parseInt(document.getElementById('editEmployeeMonths').value)
+    };
+
+    const updatedEmployee = dataManager.updateEmployee(employeeId, updatedData);
+    
+    if (updatedEmployee) {
+      // تحديث المتغيرات العامة
+      employees = dataManager.getAllEmployees();
+      
+      // إذا كان هذا الموظف الحالي، قم بتحديث العرض
+      if (currentEmployee && currentEmployee.id === employeeId) {
+        currentEmployee = updatedEmployee;
+        const score = calculatePromotionReadiness(currentEmployee);
+        const recommendation = getPromotionRecommendation(score, currentEmployee);
+        updateScoreDisplay(score, recommendation);
+        displayEmployeeStats();
+      }
+      
+      showNotification(`تم تحديث بيانات الموظف ${updatedEmployee.name} بنجاح!`, 'success');
+      hideEditEmployeeForm();
+      
+      // تحديث قائمة الموظفين إذا كانت مفتوحة
+      const employeesList = document.querySelector('.employees-list');
+      if (employeesList && employeesList.style.display !== 'none') {
+        showEmployeeList();
+      }
+    }
+    
+  } catch (error) {
+    showNotification(`خطأ في تحديث بيانات الموظف: ${error.message}`, 'warning');
+  }
+}
+
+// وظائف إدارة الدورات
+function displayEmployeeCourses(employee) {
+  const coursesContainer = document.querySelector('.employee-courses-list');
+  if (!coursesContainer) return;
+
+  const courses = employee.courses || [];
+  
+  if (courses.length === 0) {
+    coursesContainer.innerHTML = '<p class="no-courses">لا توجد دورات مسجلة</p>';
+    return;
+  }
+
+  coursesContainer.innerHTML = courses.map(course => `
+    <div class="course-item">
+      <div class="course-info">
+        <strong>${course.name}</strong>
+        <p>التاريخ: ${course.date || 'غير محدد'}</p>
+        <p>المدة: ${course.duration || 'غير محدد'}</p>
+        <p>النقاط: +${course.points || 5}</p>
+      </div>
+      <button onclick="removeCourse(${employee.id}, ${course.id})" class="remove-course-btn">حذف</button>
+    </div>
+  `).join('');
+}
+
+function showAddCourseForm(employeeId) {
+  const formHTML = `
+    <div class="add-course-overlay" id="addCourseOverlay">
+      <div class="add-course-form">
+        <h4>إضافة دورة جديدة</h4>
+        <form onsubmit="addCourseToEmployee(event, ${employeeId})">
+          <div class="form-group">
+            <label>اسم الدورة</label>
+            <input type="text" id="courseName" required>
+          </div>
+          <div class="form-group">
+            <label>تاريخ الدورة</label>
+            <input type="date" id="courseDate">
+          </div>
+          <div class="form-group">
+            <label>مدة الدورة (بالساعات)</label>
+            <input type="number" id="courseDuration" min="1" value="8">
+          </div>
+          <div class="form-group">
+            <label>النقاط المكتسبة</label>
+            <input type="number" id="coursePoints" min="1" max="20" value="5">
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="primary-button">إضافة الدورة</button>
+            <button type="button" onclick="hideAddCourseForm()" class="secondary-button">إلغاء</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  `;
+  
+  document.body.insertAdjacentHTML('beforeend', formHTML);
+}
+
+function hideAddCourseForm() {
+  const overlay = document.getElementById('addCourseOverlay');
+  if (overlay) {
+    overlay.remove();
+  }
+}
+
+function addCourseToEmployee(event, employeeId) {
+  event.preventDefault();
+  
+  try {
+    const courseData = {
+      name: document.getElementById('courseName').value.trim(),
+      date: document.getElementById('courseDate').value,
+      duration: parseInt(document.getElementById('courseDuration').value),
+      points: parseInt(document.getElementById('coursePoints').value)
+    };
+
+    const addedCourse = dataManager.addCourseToEmployee(employeeId, courseData);
+    
+    if (addedCourse) {
+      employees = dataManager.getAllEmployees();
+      
+      const employee = employees.find(emp => emp.id === employeeId);
+      displayEmployeeCourses(employee);
+      
+      // تحديث عدد الدورات في النموذج
+      document.getElementById('editEmployeeCourses').value = employee.completedCourses;
+      
+      showNotification(`تم إضافة دورة "${courseData.name}" بنجاح!`, 'success');
+      hideAddCourseForm();
+    }
+    
+  } catch (error) {
+    showNotification(`خطأ في إضافة الدورة: ${error.message}`, 'warning');
+  }
+}
+
+function removeCourse(employeeId, courseId) {
+  if (confirm('هل أنت متأكد من حذف هذه الدورة؟')) {
+    const removed = dataManager.removeCourseFromEmployee(employeeId, courseId);
+    
+    if (removed) {
+      employees = dataManager.getAllEmployees();
+      
+      const employee = employees.find(emp => emp.id === employeeId);
+      displayEmployeeCourses(employee);
+      
+      // تحديث عدد الدورات في النموذج
+      document.getElementById('editEmployeeCourses').value = employee.completedCourses;
+      
+      showNotification('تم حذف الدورة بنجاح!', 'success');
+    }
+  }
+}
+
+// تحديث الفلاتر الديناميكية
+function updateDepartmentFilters() {
+  const departments = dataManager.getAllDepartments();
+  const departmentSelect = document.getElementById('departmentFilter');
+  const addDepartmentSelect = document.getElementById('employeeDepartment');
+  const editDepartmentSelect = document.getElementById('editEmployeeDepartment');
+  
+  if (departmentSelect) {
+    const currentValue = departmentSelect.value;
+    departmentSelect.innerHTML = '<option value="الكل">جميع الأقسام</option>';
+    
+    departments.forEach(dept => {
+      const option = document.createElement('option');
+      option.value = dept;
+      option.textContent = dept;
+      departmentSelect.appendChild(option);
+    });
+    
+    // استعادة القيمة المحددة سابقاً
+    if (currentValue && departments.includes(currentValue)) {
+      departmentSelect.value = currentValue;
+    }
+  }
+  
+  // تحديث قوائم الأقسام في النماذج
+  [addDepartmentSelect, editDepartmentSelect].forEach(select => {
+    if (select) {
+      const currentValue = select.value;
+      const firstOption = select.querySelector('option');
+      select.innerHTML = '';
+      
+      if (firstOption) {
+        select.appendChild(firstOption);
+      }
+      
+      departments.forEach(dept => {
+        const option = document.createElement('option');
+        option.value = dept;
+        option.textContent = dept;
+        select.appendChild(option);
+      });
+      
+      if (currentValue && departments.includes(currentValue)) {
+        select.value = currentValue;
+      }
+    }
+  });
+}
+
 // تحسين وظيفة عرض لوحة المدير
 function showManagerDashboard() {
   // إظهار أدوات الإدارة
@@ -665,6 +985,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     showNotification('تم تحميل البيانات بنجاح', 'success');
     
+    // تحديث الفلاتر الديناميكية
+    updateDepartmentFilters();
+    
   } catch (error) {
     console.error('خطأ في تحميل البيانات:', error);
     showNotification('خطأ في تحميل البيانات، يتم استخدام البيانات التجريبية', 'warning');
@@ -723,3 +1046,11 @@ window.hideAddEmployeeForm = hideAddEmployeeForm;
 window.addNewEmployee = addNewEmployee;
 window.switchToEmployee = switchToEmployee;
 window.applyFilters = applyFilters;
+window.showEditEmployeeForm = showEditEmployeeForm;
+window.hideEditEmployeeForm = hideEditEmployeeForm;
+window.updateEmployee = updateEmployee;
+window.showAddCourseForm = showAddCourseForm;
+window.hideAddCourseForm = hideAddCourseForm;
+window.addCourseToEmployee = addCourseToEmployee;
+window.removeCourse = removeCourse;
+window.updateDepartmentFilters = updateDepartmentFilters;

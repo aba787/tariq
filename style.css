@@ -719,11 +719,200 @@ ul li:before {
 }
 
 /* تحسين التنبيهات للشاشات الصغيرة */
+/* أنماط إدارة الدورات */
+.courses-management {
+  margin-top: 30px;
+  padding: 20px;
+  background: linear-gradient(135deg, #F8F9FA, #E9ECEF);
+  border: 2px solid #8B1538;
+  border-radius: 10px;
+}
+
+.courses-management h4 {
+  color: #8B1538;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.courses-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.add-course-button {
+  background: linear-gradient(135deg, #28A745, #34CE57);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  align-self: flex-start;
+}
+
+.add-course-button:hover {
+  background: linear-gradient(135deg, #34CE57, #28A745);
+  transform: translateY(-1px);
+}
+
+.employee-courses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.course-item {
+  background: white;
+  border: 1px solid #DDD;
+  border-radius: 8px;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.course-item:hover {
+  border-color: #8B1538;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(139, 21, 56, 0.1);
+}
+
+.course-info {
+  flex: 1;
+}
+
+.course-info strong {
+  color: #8B1538;
+  font-size: 1rem;
+}
+
+.course-info p {
+  margin: 2px 0;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.remove-course-btn {
+  background: #DC3545;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background 0.3s ease;
+}
+
+.remove-course-btn:hover {
+  background: #C82333;
+}
+
+.no-courses {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  padding: 20px;
+  background: white;
+  border: 1px dashed #DDD;
+  border-radius: 8px;
+}
+
+/* النافذة المنبثقة لإضافة الدورات */
+.add-course-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  direction: rtl;
+}
+
+.add-course-form {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  border: 3px solid #8B1538;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 15px 40px rgba(139, 21, 56, 0.3);
+}
+
+.add-course-form h4 {
+  color: #8B1538;
+  margin-top: 0;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 1.3rem;
+}
+
+/* تحسين أزرار التعديل */
+.edit-button {
+  background: linear-gradient(135deg, #FF9800, #FFB74D);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
+  margin-top: 5px;
+}
+
+.edit-button:hover {
+  background: linear-gradient(135deg, #FFB74D, #FF9800);
+  transform: translateY(-1px);
+}
+
+/* تحسين عرض البطاقات */
+.employee-card {
+  min-height: 280px;
+}
+
+.employee-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* تحسين الاستجابة للشاشات الصغيرة */
 @media (max-width: 768px) {
   .notification {
     right: 10px;
     left: 10px;
     min-width: auto;
     max-width: none;
+  }
+  
+  .add-course-overlay {
+    padding: 20px;
+  }
+  
+  .add-course-form {
+    width: 100%;
+    max-width: none;
+    padding: 20px;
+  }
+  
+  .courses-section {
+    gap: 10px;
+  }
+  
+  .course-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .remove-course-btn {
+    align-self: flex-end;
   }
 }
