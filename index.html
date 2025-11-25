@@ -611,6 +611,17 @@
           <button type="button" onclick="hideEditEmployeeForm()" class="secondary-button">إلغاء</button>
         </div>
       </form>
+
+      <!-- قسم إدارة الدورات للموظف -->
+      <div class="courses-management" id="coursesManagement">
+        <h4>📚 إدارة الدورات التدريبية</h4>
+        <div class="courses-section">
+          <button type="button" onclick="showAddCourseForm(document.getElementById('editEmployeeId').value)" class="add-course-button">➕ إضافة دورة جديدة</button>
+          <div class="employee-courses-list">
+            <!-- ستتم إضافة الدورات هنا ديناميكياً -->
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- تنبيهات ذكية -->

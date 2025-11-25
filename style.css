@@ -375,6 +375,46 @@ body {
     width: 100%;
     max-width: 250px;
   }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tools-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .employee-cards-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* إضافة دعم للشاشات الكبيرة جداً */
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1400px;
+  }
+  
+  .dashboard-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* تحسين الطباعة */
+@media print {
+  .header-buttons, .dashboard-actions, .notification {
+    display: none !important;
+  }
+  
+  body {
+    background: white;
+    color: black;
+  }
+  
+  .container {
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
 }
 
 /* تأثيرات إضافية */

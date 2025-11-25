@@ -78,14 +78,16 @@ class DataManager {
 
   saveData() {
     try {
-      if (this.employees && Array.isArray(this.employees)) {
+      if (this.employees && Array.isArray(this.employees) && this.employees.length > 0) {
         localStorage.setItem('employeesData', JSON.stringify(this.employees));
+        console.log('تم حفظ البيانات بنجاح');
       }
       if (this.currentEmployeeId !== undefined && this.currentEmployeeId !== null) {
         localStorage.setItem('currentEmployeeId', this.currentEmployeeId.toString());
       }
     } catch (error) {
       console.error('خطأ في حفظ البيانات:', error);
+      showNotification('خطأ في حفظ البيانات', 'warning');
     }
   }
 
@@ -120,19 +122,22 @@ class DataManager {
     for (let field of required) {
       if (!data[field] || data[field].toString().trim() === '') {
         console.error(`حقل مطلوب مفقود: ${field}`);
+        showNotification(`حقل "${field}" مطلوب`, 'warning');
         return false;
       }
     }
 
     // التحقق من صحة البريد الإلكتروني
-    if (data.email && !this.isValidEmail(data.email)) {
+    if (data.email && data.email.trim() !== '' && !this.isValidEmail(data.email)) {
       console.error('عنوان البريد الإلكتروني غير صحيح');
+      showNotification('عنوان البريد الإلكتروني غير صحيح', 'warning');
       return false;
     }
 
     // التحقق من سنوات الخبرة
-    if (isNaN(data.yearsOfExperience) || data.yearsOfExperience < 0) {
-      console.error('سنوات الخبرة يجب أن تكون رقم موجب');
+    if (isNaN(data.yearsOfExperience) || data.yearsOfExperience < 0 || data.yearsOfExperience > 50) {
+      console.error('سنوات الخبرة يجب أن تكون رقم موجب وأقل من 50');
+      showNotification('سنوات الخبرة يجب أن تكون بين 0 و 50', 'warning');
       return false;
     }
 
@@ -975,7 +980,27 @@ function hideManagerDashboard() {
 document.addEventListener('DOMContentLoaded', function() {
   // التأكد من تحميل البيانات بشكل صحيح
   try {
+    // التحقق من وجود مدير البيانات
+    if (!dataManager) {
+      console.log('إعادة تهيئة مدير البيانات...');
+      if (!initializeApp()) {
+        throw new Error('فشل في تهيئة التطبيق');
+      }
+    }
+    
     currentEmployee = dataManager.getCurrentEmployee();
+    
+    // التحقق من وجود موظف حالي
+    if (!currentEmployee) {
+      console.log('لا يوجد موظف حالي، استخدام أول موظف');
+      const allEmployees = dataManager.getAllEmployees();
+      if (allEmployees.length > 0) {
+        currentEmployee = allEmployees[0];
+        dataManager.currentEmployeeId = currentEmployee.id;
+      } else {
+        throw new Error('لا يوجد موظفين في البيانات');
+      }
+    }
     
     const initialScore = calculatePromotionReadiness(currentEmployee);
     const initialRecommendation = getPromotionRecommendation(initialScore, currentEmployee);
@@ -983,24 +1008,34 @@ document.addEventListener('DOMContentLoaded', function() {
     updateScoreDisplay(initialScore, initialRecommendation);
     displayEmployeeStats();
     
-    showNotification('تم تحميل البيانات بنجاح', 'success');
-    
     // تحديث الفلاتر الديناميكية
     updateDepartmentFilters();
+    
+    showNotification('تم تحميل التطبيق بنجاح! 🎉', 'success');
     
   } catch (error) {
     console.error('خطأ في تحميل البيانات:', error);
     showNotification('خطأ في تحميل البيانات، يتم استخدام البيانات التجريبية', 'warning');
     
     // استخدام البيانات التجريبية كخطة احتياطية
-    dataManager.loadDefaultData();
-    currentEmployee = dataManager.getCurrentEmployee();
-    
-    const initialScore = calculatePromotionReadiness(currentEmployee);
-    const initialRecommendation = getPromotionRecommendation(initialScore, currentEmployee);
-    
-    updateScoreDisplay(initialScore, initialRecommendation);
-    displayEmployeeStats();
+    try {
+      dataManager = new DataManager();
+      dataManager.loadDefaultData();
+      currentEmployee = dataManager.getCurrentEmployee();
+      employees = dataManager.getAllEmployees();
+      
+      const initialScore = calculatePromotionReadiness(currentEmployee);
+      const initialRecommendation = getPromotionRecommendation(initialScore, currentEmployee);
+      
+      updateScoreDisplay(initialScore, initialRecommendation);
+      displayEmployeeStats();
+      updateDepartmentFilters();
+      
+      showNotification('تم تحميل البيانات التجريبية', 'info');
+    } catch (fallbackError) {
+      console.error('خطأ حرج:', fallbackError);
+      showNotification('خطأ حرج في تحميل التطبيق', 'warning');
+    }
   }
 });
 
