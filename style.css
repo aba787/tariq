@@ -629,13 +629,14 @@ ul li:before {
   margin-top: 15px;
   padding-top: 10px;
   border-top: 1px solid #EEE;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.switch-button {
+.switch-button, .edit-button {
   width: 100%;
   padding: 8px;
-  background: #8B1538;
-  color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -643,12 +644,26 @@ ul li:before {
   transition: background 0.3s ease;
 }
 
+.switch-button {
+  background: #8B1538;
+  color: white;
+}
+
 .switch-button:hover {
   background: #A0223A;
 }
 
-/* نموذج إضافة موظف */
-.add-employee-form {
+.edit-button {
+  background: #FF9800;
+  color: white;
+}
+
+.edit-button:hover {
+  background: #F57C00;
+}
+
+/* نموذج إضافة/تعديل موظف */
+.add-employee-form, .edit-employee-form {
   margin-top: 30px;
   padding: 25px;
   background: linear-gradient(135deg, #FFF, #FAFAFA);

@@ -1,4 +1,3 @@
-
 // نظام إدارة البيانات المحسن
 class DataManager {
   constructor() {

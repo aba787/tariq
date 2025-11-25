@@ -119,6 +119,15 @@
               <option value="تقنية المعلومات">تقنية المعلومات</option>
               <option value="المالية">المالية</option>
               <option value="الإدارة العامة">الإدارة العامة</option>
+              <option value="الموارد البشرية">الموارد البشرية</option>
+              <option value="التسويق">التسويق</option>
+              <option value="المبيعات">المبيعات</option>
+              <option value="خدمة العملاء">خدمة العملاء</option>
+              <option value="الهندسة">الهندسة</option>
+              <option value="العمليات">العمليات</option>
+              <option value="الأمن والسلامة">الأمن والسلامة</option>
+              <option value="التطوير والبحوث">التطوير والبحوث</option>
+              <option value="الشؤون القانونية">الشؤون القانونية</option>
             </select>
             <select id="performanceFilter" onchange="applyFilters()">
               <option value="الكل">جميع التقييمات</option>
@@ -188,6 +197,71 @@
         <div class="form-actions">
           <button type="submit" class="primary-button">إضافة الموظف</button>
           <button type="button" onclick="hideAddEmployeeForm()" class="secondary-button">إلغاء</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- نموذج تعديل الموظف -->
+    <div class="edit-employee-form" style="display: none;">
+      <h3>✏️ تعديل بيانات الموظف</h3>
+      <form id="editEmployeeForm" onsubmit="updateEmployee(event)">
+        <input type="hidden" id="editEmployeeId">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>الاسم الكامل</label>
+            <input type="text" id="editEmployeeName" required>
+          </div>
+          <div class="form-group">
+            <label>المنصب</label>
+            <input type="text" id="editEmployeePosition" required>
+          </div>
+          <div class="form-group">
+            <label>القسم</label>
+            <select id="editEmployeeDepartment" required>
+              <option value="">اختر القسم</option>
+              <option value="تقنية المعلومات">تقنية المعلومات</option>
+              <option value="المالية">المالية</option>
+              <option value="الإدارة العامة">الإدارة العامة</option>
+              <option value="الموارد البشرية">الموارد البشرية</option>
+              <option value="التسويق">التسويق</option>
+              <option value="المبيعات">المبيعات</option>
+              <option value="خدمة العملاء">خدمة العملاء</option>
+              <option value="الهندسة">الهندسة</option>
+              <option value="العمليات">العمليات</option>
+              <option value="الأمن والسلامة">الأمن والسلامة</option>
+              <option value="التطوير والبحوث">التطوير والبحوث</option>
+              <option value="الشؤون القانونية">الشؤون القانونية</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>سنوات الخبرة</label>
+            <input type="number" id="editEmployeeExperience" min="0" max="50" required>
+          </div>
+          <div class="form-group">
+            <label>التقييم السنوي</label>
+            <select id="editEmployeeRating" required>
+              <option value="">اختر التقييم</option>
+              <option value="ممتاز">ممتاز</option>
+              <option value="جيد جداً">جيد جداً</option>
+              <option value="جيد">جيد</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>البريد الإلكتروني</label>
+            <input type="email" id="editEmployeeEmail">
+          </div>
+          <div class="form-group">
+            <label>عدد الدورات المكتملة</label>
+            <input type="number" id="editEmployeeCourses" min="0" max="50" value="0">
+          </div>
+          <div class="form-group">
+            <label>أشهر منذ آخر ترقية</label>
+            <input type="number" id="editEmployeeMonths" min="0" max="500" value="0">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="primary-button">💾 حفظ التغييرات</button>
+          <button type="button" onclick="hideEditEmployeeForm()" class="secondary-button">إلغاء</button>
         </div>
       </form>
     </div>
